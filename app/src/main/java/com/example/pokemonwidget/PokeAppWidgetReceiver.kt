@@ -5,4 +5,5 @@ import androidx.glance.appwidget.GlanceAppWidgetReceiver
 
 class PokeAppWidgetReceiver(override val glanceAppWidget: GlanceAppWidget = PokeAppWidget()) :
     GlanceAppWidgetReceiver() {
+
 }
