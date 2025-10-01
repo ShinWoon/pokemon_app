@@ -1,4 +1,4 @@
-package com.example.pokemonwidget
+package com.example.pokemonapp
 
 import org.junit.Test
 

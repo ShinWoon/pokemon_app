@@ -1,4 +1,4 @@
-package com.example.pokemonwidget.ui.theme
+package brandy.newcld.pokemonapp.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,9 +1,9 @@
-package com.example.pokemonwidget.dao
+package brandy.newcld.pokemonapp.dao
 
 
 import com.google.gson.annotations.SerializedName
 
-data class Generation(
+data class Species(
     @SerializedName("name")
     val name: String,
     @SerializedName("url")

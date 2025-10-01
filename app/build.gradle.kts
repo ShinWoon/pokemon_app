@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.pokemonwidget"
+    namespace = "brandy.newcld.pokemonapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.pokemonwidget"
+        applicationId = "brandy.newcld.pokemonapp"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
