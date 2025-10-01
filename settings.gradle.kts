@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PokemonApp"
+rootProject.name = "Pokemon"
 include(":app")
- 
+include(":ui")

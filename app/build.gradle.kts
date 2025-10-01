@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "brandy.newcld.pokemonapp"
+    namespace = "brandy.newcld.pokemon"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "brandy.newcld.pokemonapp"
+        applicationId = "brandy.newcld.pokemon"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -67,6 +67,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(project(":ui"))
 
     // Glide 사용
     implementation("com.github.bumptech.glide:glide:4.12.0")
