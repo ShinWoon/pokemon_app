@@ -52,6 +52,9 @@ dependencies {
     kapt(libs.dagger.hilt.android.compiler)
 
     implementation(project(":ui"))
+    implementation(project(":remote"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
 }
 
 kapt {
