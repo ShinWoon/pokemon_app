@@ -1,9 +1,9 @@
-package brandy.newcld.pokemon.dao
+package brandy.newcld.pokemon.remote.model
 
 
 import com.google.gson.annotations.SerializedName
 
-data class Sprites(
+data class SpritesResponse(
     @SerializedName("back_default")
     val backDefault: String,
     @SerializedName("back_female")
@@ -19,5 +19,10 @@ data class Sprites(
     @SerializedName("front_shiny")
     val frontShiny: String,
     @SerializedName("front_shiny_female")
-    val frontShinyFemale: Any
-)
+    val frontShinyFemale: Any,
+    @SerializedName("other")
+    val other: Other
+) {
+    data class Other (@SerializedName("official-artwork") val officialArtwork: OfficialArtwork)
+    data class OfficialArtwork(@SerializedName("front_default") val frontDefault: String, @SerializedName("front_shiny") val frontShiny: String)
+}
