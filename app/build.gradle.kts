@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.pokemonwidget"
+    namespace = "brandy.newcld.pokemon"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.pokemonwidget"
+        applicationId = "brandy.newcld.pokemon"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -38,10 +38,6 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -51,51 +47,14 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.hilt.android)
+    kapt(libs.dagger.hilt.android.compiler)
 
-    // Glide 사용
-    implementation("com.github.bumptech.glide:glide:4.12.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
-
-    // https://github.com/square/retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-
-    // https://github.com/square/okhttp
-    implementation("com.squareup.okhttp3:okhttp:4.9.0")
-
-    // https://github.com/square/retrofit/tree/master/retrofit-converters/gson
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    // https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
-
-    // For AppWidgets support
-    implementation("androidx.glance:glance-appwidget:1.1.0")
-
-    // For interop APIs with Material 3
-    implementation("androidx.glance:glance-material3:1.1.0")
-
-    // hilt
-//    implementation("com.google.dagger:hilt-android:2.44")
-//    kapt("com.google.dagger:hilt-android-compiler:2.44")
-
-    // coil
-    implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation(project(":ui"))
+    implementation(project(":remote"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
 }
 
 kapt {
