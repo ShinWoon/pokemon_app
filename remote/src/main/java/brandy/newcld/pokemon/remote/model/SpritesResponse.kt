@@ -1,28 +1,25 @@
 package brandy.newcld.pokemon.remote.model
 
 
+import brandy.newcld.pokemon.data.model.SpritesEntity
+import brandy.newcld.pokemon.remote.RemoteMapper
 import com.google.gson.annotations.SerializedName
 
 data class SpritesResponse(
-    @SerializedName("back_default")
-    val backDefault: String,
-    @SerializedName("back_female")
-    val backFemale: Any,
-    @SerializedName("back_shiny")
-    val backShiny: String,
-    @SerializedName("back_shiny_female")
-    val backShinyFemale: Any,
     @SerializedName("front_default")
     val frontDefault: String,
-    @SerializedName("front_female")
-    val frontFemale: Any,
-    @SerializedName("front_shiny")
-    val frontShiny: String,
-    @SerializedName("front_shiny_female")
-    val frontShinyFemale: Any,
     @SerializedName("other")
-    val other: Other
-) {
-    data class Other (@SerializedName("official-artwork") val officialArtwork: OfficialArtwork)
-    data class OfficialArtwork(@SerializedName("front_default") val frontDefault: String, @SerializedName("front_shiny") val frontShiny: String)
+    val other: OtherResponse
+): RemoteMapper<SpritesEntity> {
+    override fun toData(): SpritesEntity =
+        SpritesEntity(frontDefault, other.toData())
+
+    data class OtherResponse(@SerializedName("official-artwork") val officialArtwork: OfficialArtworkResponse): RemoteMapper<SpritesEntity.OtherEntity> {
+        override fun toData(): SpritesEntity.OtherEntity =
+            SpritesEntity.OtherEntity(officialArtwork.toData())
+    }
+    data class OfficialArtworkResponse(@SerializedName("front_default") val frontDefault: String): RemoteMapper<SpritesEntity.OfficialArtworkEntity> {
+        override fun toData(): SpritesEntity.OfficialArtworkEntity =
+            SpritesEntity.OfficialArtworkEntity(frontDefault)
+    }
 }

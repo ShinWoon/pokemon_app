@@ -1,6 +1,9 @@
 package brandy.newcld.pokemon.remote.model
 
 
+import brandy.newcld.pokemon.data.model.PokemonInfoEntity
+import brandy.newcld.pokemon.remote.RemoteMapper
+import brandy.newcld.pokemon.remote.toData
 import com.google.gson.annotations.SerializedName
 
 data class PokemonInfoResponse(
@@ -38,4 +41,7 @@ data class PokemonInfoResponse(
     val stats: List<StatsResponse>,
     @SerializedName("types")
     val types: List<TypesResponse>
-)
+): RemoteMapper<PokemonInfoEntity> {
+    override fun toData(): PokemonInfoEntity =
+        PokemonInfoEntity(id, name, baseExperience, height, isDefault, order, weight, abilities.toData(), forms.toData(), heldItems.toData(), locationAreaEncounters, moves.toData(), species.toData(), sprites.toData(), cries.toData(), stats.toData(), types.toData())
+}

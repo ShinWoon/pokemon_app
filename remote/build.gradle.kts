@@ -33,9 +33,11 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
 
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
+    implementation(libs.hilt.android)
 }
