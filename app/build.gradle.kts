@@ -55,6 +55,7 @@ dependencies {
     implementation(project(":remote"))
     implementation(project(":domain"))
     implementation(project(":data"))
+    implementation(project(":common"))
 }
 
 kapt {

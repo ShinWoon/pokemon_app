@@ -2,14 +2,14 @@ package brandy.newcld.pokemon.remote.datasourceImpl
 
 import brandy.newcld.pokemon.data.model.NameUrlEntity
 import brandy.newcld.pokemon.data.model.PokemonInfoEntity
-import brandy.newcld.pokemon.data.remote.RemoteDataSource
+import brandy.newcld.pokemon.data.remote.PokemonRemoteDataSource
 import brandy.newcld.pokemon.remote.api.ApiService
 import brandy.newcld.pokemon.remote.toData
 import javax.inject.Inject
 
-class RemoteDataSourceImpl @Inject constructor(
+class PokemonRemoteDataSourceImpl @Inject constructor(
     private val apiService: ApiService,
-) : RemoteDataSource {
+) : PokemonRemoteDataSource {
     override suspend fun getPokemonList(
         limit: Int,
         offset: Int
