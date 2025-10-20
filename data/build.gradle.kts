@@ -8,6 +8,6 @@ dependencies {
     implementation(project(":dataresource"))
 
     implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
     implementation(libs.hilt.core)
 }

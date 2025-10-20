@@ -1,7 +1,5 @@
 package brandy.newcld.pokemon.data
 
-import com.squareup.kotlinpoet.BOOLEAN
-
 internal interface DataMapper<DomainModel> {
     fun toDomain(): DomainModel
 }
@@ -20,7 +18,7 @@ internal fun <EntityModel, DomainModel> EntityModel.toDomainModel(): DomainModel
         }
         is Unit, Boolean, Int, String, Byte, Short, Long, Char -> this
         else -> {
-            throw IllegalArgumentException("DataModel은 DataMapper<>, List<DataMapper<>>, Unit로 구성되어야 합니다")
+            throw IllegalArgumentException("DataModel은 DataMapper<>, List<DataMapper<>>, Unit으로 구성되어야 합니다")
         }
     } as DomainModel
 }
