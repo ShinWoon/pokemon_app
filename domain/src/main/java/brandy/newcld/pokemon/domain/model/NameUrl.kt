@@ -1,4 +1,6 @@
 package brandy.newcld.pokemon.domain.model
 
-class NameUrl {
-}
+data class NameUrl (
+    val name: String,
+    val url: String
+)
