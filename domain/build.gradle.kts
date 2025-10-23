@@ -1,5 +1,6 @@
 plugins {
-    id("java-library")
+    id("kotlin")
+    id("kotlin-kapt")
     alias(libs.plugins.jetbrains.kotlin.jvm)
 }
 java {
@@ -10,4 +11,11 @@ kotlin {
     compilerOptions {
         jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
     }
+}
+dependencies {
+    implementation(project(":dataresource"))
+
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.hilt.core)
+    kapt(libs.hilt.compiler)
 }
