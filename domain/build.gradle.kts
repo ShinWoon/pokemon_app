@@ -16,6 +16,5 @@ dependencies {
     implementation(project(":dataresource"))
 
     implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.hilt.core)
-    kapt(libs.hilt.compiler)
+    implementation(libs.inject)
 }
