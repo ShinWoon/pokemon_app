@@ -1,12 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt.plugin)
     id("kotlin-kapt")
 }
 
 android {
     namespace = "brandy.newcld.pokemon"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "brandy.newcld.pokemon"
@@ -49,13 +50,14 @@ android {
 dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.hilt.android)
-    kapt(libs.dagger.hilt.android.compiler)
+    kapt(libs.hilt.compiler)
 
     implementation(project(":ui"))
     implementation(project(":remote"))
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":common"))
+    implementation(project(":presentation"))
 }
 
 kapt {

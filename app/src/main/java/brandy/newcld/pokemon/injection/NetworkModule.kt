@@ -1,4 +1,4 @@
-package brandy.newcld.pokemon.remote.di
+package brandy.newcld.pokemon.injection
 
 import brandy.newcld.pokemon.remote.api.ApiService
 import brandy.newcld.pokemon.remote.api.createApiService
@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object NetworkModule {
+object NetworkModule {
 
     @Provides
     @Singleton
