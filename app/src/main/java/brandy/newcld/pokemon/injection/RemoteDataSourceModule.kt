@@ -1,4 +1,4 @@
-package brandy.newcld.pokemon.remote.di
+package brandy.newcld.pokemon.injection
 
 import brandy.newcld.pokemon.data.remote.PokemonRemoteDataSource
 import brandy.newcld.pokemon.remote.datasourceImpl.PokemonRemoteDataSourceImpl
@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal abstract class RemoteDataSourceModule {
+abstract class RemoteDataSourceModule {
 
     @Binds
     @Singleton

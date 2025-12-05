@@ -1,4 +1,4 @@
-package brandy.newcld.pokemon.data.di
+package brandy.newcld.pokemon.injection
 
 import brandy.newcld.pokemon.data.repositoryImpl.PokemonRepositoryImpl
 import brandy.newcld.pokemon.domain.repository.PokemonRepository
@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal abstract class RepositoryModule {
+abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindPokemonRepository(pokemonRepositoryImpl: PokemonRepositoryImpl): PokemonRepository
