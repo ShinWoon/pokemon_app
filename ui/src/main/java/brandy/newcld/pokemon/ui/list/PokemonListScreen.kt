@@ -48,10 +48,11 @@ fun PokemonListScreen(
         items(
             items = pokemonListState.items,
             key = { it.id },
+            contentType = { pokemonListState.items::class }
         ) { pokemonItem ->
             PokemonListItem(
                 modifier = modifier,
-                onClick = { pokemonListViewModel.onItemClick("") },
+                onClick = {  },
                 pokemonItem = pokemonItem
             )
         }

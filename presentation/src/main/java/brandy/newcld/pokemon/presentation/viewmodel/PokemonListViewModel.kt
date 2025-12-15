@@ -13,16 +13,22 @@ import javax.inject.Inject
 @HiltViewModel
 class PokemonListViewModel @Inject constructor(
     private val getPokemonListUseCase: GetPokemonListUseCase,
-    private val soundPlayer: SoundPlayer
 ): BaseViewModel() {
     private val _pokemonList = MutableStateFlow(ListUiState<PokemonListItemModel>())
     val pokemonList = _pokemonList.asStateFlow()
 
+    private val _offset = MutableStateFlow(0)
+    val offset = _offset.asStateFlow()
+
     fun getPokemonList() {
-        getPokemonListUseCase().bindList(state = _pokemonList, mapper = NameUrl::toPokemonListItemModel)
+        getPokemonListUseCase(limit = LIMIT, offset = offset.value).bindList(state = _pokemonList, mapper = NameUrl::toPokemonListItemModel)
     }
 
-    fun onItemClick(oggUrl: String) {
-        soundPlayer.play("https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/35.ogg")
+    fun setOffset(offset: Int) {
+        _offset.value = offset
+    }
+
+    companion object {
+        private const val LIMIT = 20
     }
 }

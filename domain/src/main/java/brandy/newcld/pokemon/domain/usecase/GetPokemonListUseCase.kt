@@ -9,5 +9,5 @@ import javax.inject.Inject
 class GetPokemonListUseCase @Inject constructor(
     private val pokemonRepository: PokemonRepository
 ) {
-    operator fun invoke(): Flow<DataResource<List<NameUrl>>> = pokemonRepository.getPokemonList(10, 0)
+    operator fun invoke(limit: Int, offset: Int): Flow<DataResource<List<NameUrl>>> = pokemonRepository.getPokemonList(limit = limit,offset = offset)
 }
