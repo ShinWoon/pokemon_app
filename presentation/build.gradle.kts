@@ -45,6 +45,9 @@ dependencies {
     // viewmodel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
 
+    // paging
+    implementation("androidx.paging:paging-runtime:3.3.6")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
