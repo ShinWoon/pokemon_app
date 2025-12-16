@@ -43,10 +43,10 @@ dependencies {
     kapt(libs.hilt.android.compiler)
 
     // viewmodel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     // paging
-    implementation("androidx.paging:paging-runtime:3.3.6")
+    implementation(libs.androidx.paging.runtime)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
