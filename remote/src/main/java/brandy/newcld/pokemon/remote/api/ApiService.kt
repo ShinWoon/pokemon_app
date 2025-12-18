@@ -1,6 +1,5 @@
 package brandy.newcld.pokemon.remote.api
 
-import brandy.newcld.pokemon.data.model.NameUrlEntity
 import brandy.newcld.pokemon.remote.model.PokemonInfoResponse
 import brandy.newcld.pokemon.remote.model.PokemonResponse
 import retrofit2.http.GET
