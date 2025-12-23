@@ -1,5 +1,6 @@
 package brandy.newcld.pokemon.domain.usecase
 
+import androidx.paging.PagingData
 import brandy.newcld.pokemon.dataresource.DataResource
 import brandy.newcld.pokemon.domain.model.NameUrl
 import brandy.newcld.pokemon.domain.repository.PokemonRepository
@@ -9,5 +10,5 @@ import javax.inject.Inject
 class GetPokemonListUseCase @Inject constructor(
     private val pokemonRepository: PokemonRepository
 ) {
-    operator fun invoke(limit: Int, offset: Int): Flow<DataResource<List<NameUrl>>> = pokemonRepository.getPokemonList(limit = limit,offset = offset)
+    operator fun invoke(limit: Int, offset: Int): Flow<PagingData<List<NameUrl>>> = pokemonRepository.getPokemonList(limit = limit,offset = offset)
 }
