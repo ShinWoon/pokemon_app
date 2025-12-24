@@ -10,16 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.collectAsLazyPagingItems
 import brandy.newcld.pokemon.presentation.model.PokemonListItemModel
 import brandy.newcld.pokemon.presentation.viewmodel.PokemonListViewModel
 import brandy.newcld.pokemon.ui.theme.Typography
@@ -32,7 +30,7 @@ fun PokemonListScreen(
     modifier: Modifier = Modifier,
     pokemonListViewModel: PokemonListViewModel,
 ) {
-    val pokemonListState by pokemonListViewModel.pokemonList.collectAsState()
+    val items = pokemonListViewModel.pokemonList.collectAsLazyPagingItems()
 
     LaunchedEffect(Unit) {
         pokemonListViewModel.getPokemonList()
@@ -46,15 +44,17 @@ fun PokemonListScreen(
         contentPadding = PaddingValues(12.dp)
     ) {
         items(
-            items = pokemonListState.items,
-            key = { it.id },
-            contentType = { pokemonListState.items::class }
-        ) { pokemonItem ->
-            PokemonListItem(
-                modifier = modifier,
-                onClick = {  },
-                pokemonItem = pokemonItem
-            )
+            count = items.itemCount,
+            key = { index -> items[index]?.id ?: index },
+        ) { index ->
+            val pokemon = items[index]
+            if(pokemon != null) {
+                PokemonListItem(
+                    modifier = modifier,
+                    onClick = {  },
+                    pokemonItem = pokemon
+                )
+            }
         }
     }
 }

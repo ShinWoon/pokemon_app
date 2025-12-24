@@ -3,15 +3,16 @@ package brandy.newcld.pokemon.data.repositoryImpl
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
 import brandy.newcld.pokemon.data.bound.flowDataResource
 import brandy.newcld.pokemon.data.remote.PokemonListPagingSource
 import brandy.newcld.pokemon.data.remote.PokemonRemoteDataSource
-import brandy.newcld.pokemon.data.toDomainModel
 import brandy.newcld.pokemon.dataresource.DataResource
 import brandy.newcld.pokemon.domain.model.NameUrl
 import brandy.newcld.pokemon.domain.model.PokemonInfo
 import brandy.newcld.pokemon.domain.repository.PokemonRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class PokemonRepositoryImpl @Inject constructor(
@@ -22,11 +23,11 @@ class PokemonRepositoryImpl @Inject constructor(
     override fun getPokemonList(
         limit: Int,
         offset: Int
-    ): Flow<PagingData<List<NameUrl>>> = Pager(
+    ): Flow<PagingData<NameUrl>> = Pager(
         config = PagingConfig (
             pageSize = 20,
             enablePlaceholders = false
         ),
         pagingSourceFactory = { PokemonListPagingSource(remoteDataSource) }
-    ).flow.toDomainModel()
+    ).flow.map { it. }
 }
