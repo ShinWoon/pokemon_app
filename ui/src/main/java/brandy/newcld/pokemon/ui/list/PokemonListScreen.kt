@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +32,8 @@ fun PokemonListScreen(
     pokemonListViewModel: PokemonListViewModel,
 ) {
     val items = pokemonListViewModel.pokemonList.collectAsLazyPagingItems()
+    val listState = rememberLazyGridState()
+    val isScrolling = listState.isScrollInProgress
 
     LaunchedEffect(Unit) {
         pokemonListViewModel.getPokemonList()

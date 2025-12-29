@@ -19,11 +19,11 @@ class PokemonListPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, NameUrlEntity> {
         return try {
             val offset = params.key ?: 0
-            val limit = params.loadSize
+            val limit = PAGE_SIZE
 
             val response = remoteDataSource.getPokemonList(offset = offset, limit = limit)
 
-            val nextKey = if(response.isEmpty()) null else offset + response.size
+            val nextKey = if (response.size < limit) null else offset + limit
             val prevKey = if(offset == 0) null else maxOf(offset - limit, 0)
 
             LoadResult.Page(
@@ -35,4 +35,6 @@ class PokemonListPagingSource @Inject constructor(
             LoadResult.Error(e)
         }
     }
+
+    private companion object { const val PAGE_SIZE = 20 }
 }

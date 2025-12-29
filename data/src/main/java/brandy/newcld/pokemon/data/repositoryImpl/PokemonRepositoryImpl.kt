@@ -3,10 +3,10 @@ package brandy.newcld.pokemon.data.repositoryImpl
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.map
 import brandy.newcld.pokemon.data.bound.flowDataResource
 import brandy.newcld.pokemon.data.remote.PokemonListPagingSource
 import brandy.newcld.pokemon.data.remote.PokemonRemoteDataSource
+import brandy.newcld.pokemon.data.toDomainPaging
 import brandy.newcld.pokemon.dataresource.DataResource
 import brandy.newcld.pokemon.domain.model.NameUrl
 import brandy.newcld.pokemon.domain.model.PokemonInfo
@@ -20,14 +20,13 @@ class PokemonRepositoryImpl @Inject constructor(
 ): PokemonRepository {
     override fun getPokemonInfo(id: Int): Flow<DataResource<PokemonInfo>> = flowDataResource { remoteDataSource.getPokemonInfo(id) }
 
-    override fun getPokemonList(
-        limit: Int,
-        offset: Int
-    ): Flow<PagingData<NameUrl>> = Pager(
+    override fun getPokemonList(): Flow<PagingData<NameUrl>> = Pager(
         config = PagingConfig (
-            pageSize = 20,
+            pageSize = 40,
+            initialLoadSize = 60,
+            prefetchDistance = 30,
             enablePlaceholders = false
         ),
         pagingSourceFactory = { PokemonListPagingSource(remoteDataSource) }
-    ).flow.map { it. }
+    ).flow.map { it.toDomainPaging() }
 }

@@ -16,8 +16,7 @@ class PokemonRemoteDataSourceImpl @Inject constructor(
         limit: Int,
         offset: Int
     ): List<NameUrlEntity> {
-        Log.d(TAG, "getPokemonList: ${apiService.getPokemonList(limit = limit, offset = 0).results.toData()}")
-        return apiService.getPokemonList(limit = limit, offset = 0).results.toData()
+        return apiService.getPokemonList(limit = limit, offset = offset).results.toData()
     }
 
     override suspend fun getPokemonInfo(id: Int): PokemonInfoEntity {

@@ -24,7 +24,7 @@ class PokemonListViewModel @Inject constructor(
 
     fun getPokemonList() {
         viewModelScope.launch {
-            getPokemonListUseCase(LIMIT, 0)
+            getPokemonListUseCase()
                 .map { pagingData ->
                     pagingData.map { pokemon ->
                         pokemon.toPokemonListItemModel()
@@ -35,9 +35,5 @@ class PokemonListViewModel @Inject constructor(
                     _pokemonList.value = pagingData
                 }
         }
-    }
-
-    companion object {
-        private const val LIMIT = 20
     }
 }

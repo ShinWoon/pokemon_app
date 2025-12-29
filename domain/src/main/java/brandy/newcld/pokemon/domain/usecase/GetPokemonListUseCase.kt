@@ -10,5 +10,5 @@ import javax.inject.Inject
 class GetPokemonListUseCase @Inject constructor(
     private val pokemonRepository: PokemonRepository
 ) {
-    operator fun invoke(limit: Int, offset: Int): Flow<PagingData<NameUrl>> = pokemonRepository.getPokemonList(limit = limit,offset = offset)
+    operator fun invoke(): Flow<PagingData<NameUrl>> = pokemonRepository.getPokemonList()
 }

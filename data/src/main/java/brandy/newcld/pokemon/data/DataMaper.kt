@@ -1,5 +1,8 @@
 package brandy.newcld.pokemon.data
 
+import androidx.paging.PagingData
+import androidx.paging.map
+
 internal interface DataMapper<DomainModel> {
     fun toDomain(): DomainModel
 }
@@ -22,3 +25,6 @@ internal fun <EntityModel, DomainModel> EntityModel.toDomainModel(): DomainModel
         }
     } as DomainModel
 }
+
+internal fun <E : DataMapper<D>, D : Any> PagingData<E>.toDomainPaging(): PagingData<D> =
+    map { it.toDomain() }
