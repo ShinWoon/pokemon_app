@@ -1,5 +1,6 @@
 package brandy.newcld.pokemon.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import brandy.newcld.pokemon.dataresource.DataResource
@@ -13,9 +14,12 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
+private const val TAG = "BaseViewModel"
+
 abstract class BaseViewModel: ViewModel() {
-    protected fun <T> Flow<DataResource<T>>.bind(
-        state: MutableStateFlow<UiState<T>>
+    protected fun <D, U> Flow<DataResource<D>>.bind(
+        state: MutableStateFlow<UiState<U>>,
+        mapper: (D) -> U,
     ) {
         this.onEach { res ->
             state.update { current ->
@@ -23,7 +27,7 @@ abstract class BaseViewModel: ViewModel() {
                     is DataResource.Loading -> current.copy(isLoading = true)
                     is DataResource.Success -> current.copy(
                         isLoading = false,
-                        data = res.data,
+                        data = mapper(res.data),
                         error = null
                     )
                     is DataResource.Error -> current.copy(
@@ -36,8 +40,9 @@ abstract class BaseViewModel: ViewModel() {
             .launchIn(viewModelScope)
     }
 
-    protected fun <T> Flow<DataResource<List<T>>>.bindList(
-        state: MutableStateFlow<ListUiState<T>>
+    protected fun <D, U> Flow<DataResource<List<D>>>.bindList(
+        state: MutableStateFlow<ListUiState<U>>,
+        mapper: (D) -> U,
     ) {
         this.onEach { res ->
             state.update { current ->
@@ -45,7 +50,7 @@ abstract class BaseViewModel: ViewModel() {
                     is DataResource.Loading -> current.copy(isLoading = true)
                     is DataResource.Success -> current.copy(
                         isLoading = false,
-                        items = res.data,
+                        items = res.data.map(mapper),
                         error = null
                     )
                     is DataResource.Error -> current.copy(

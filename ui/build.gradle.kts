@@ -40,6 +40,7 @@ android {
 
 dependencies {
     implementation(project(":presentation"))
+    implementation(libs.androidx.media3.exoplayer)
 
     val composeBom = platform("androidx.compose:compose-bom:2024.09.02")
     implementation(composeBom)
@@ -73,8 +74,11 @@ dependencies {
     kapt(libs.hilt.android.compiler)
 
     // Navigation
-    implementation("androidx.navigation:navigation-compose:2.7.6")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    // paging
+    implementation(libs.androidx.paging.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

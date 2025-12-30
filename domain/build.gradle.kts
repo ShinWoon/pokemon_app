@@ -15,6 +15,9 @@ kotlin {
 dependencies {
     implementation(project(":dataresource"))
 
+    // paging - android 종속 X
+    implementation(libs.androidx.paging.common)
+
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.inject)
 }

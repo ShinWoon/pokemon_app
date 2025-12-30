@@ -35,6 +35,9 @@ android {
 dependencies {
     implementation(project(":data"))
 
+    // paging
+    implementation(libs.androidx.paging.runtime)
+
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.retrofit)

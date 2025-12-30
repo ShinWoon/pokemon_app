@@ -1,25 +1,39 @@
 package brandy.newcld.pokemon.presentation.viewmodel
 
-import android.util.Log
-import brandy.newcld.pokemon.domain.model.NameUrl
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
 import brandy.newcld.pokemon.domain.usecase.GetPokemonListUseCase
-import brandy.newcld.pokemon.presentation.model.ListUiState
+import brandy.newcld.pokemon.presentation.model.PokemonListItemModel
+import brandy.newcld.pokemon.presentation.model.toPokemonListItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-private const val TAG = "PokemonListViewModel"
 
 @HiltViewModel
 class PokemonListViewModel @Inject constructor(
     private val getPokemonListUseCase: GetPokemonListUseCase,
 ): BaseViewModel() {
-    private val _pokemonList = MutableStateFlow(ListUiState<NameUrl>())
+    private val _pokemonList = MutableStateFlow<PagingData<PokemonListItemModel>>(PagingData.empty())
     val pokemonList = _pokemonList.asStateFlow()
 
     fun getPokemonList() {
-        getPokemonListUseCase().bindList(_pokemonList)
-        Log.d(TAG, "getPokemonList: ${pokemonList.value}")
+        viewModelScope.launch {
+            getPokemonListUseCase()
+                .map { pagingData ->
+                    pagingData.map { pokemon ->
+                        pokemon.toPokemonListItemModel()
+                    }
+                }
+                .cachedIn(viewModelScope)
+                .collectLatest { pagingData ->
+                    _pokemonList.value = pagingData
+                }
+        }
     }
 }
