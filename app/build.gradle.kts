@@ -52,6 +52,9 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
+    // splash
+    implementation("androidx.core:core-splashscreen:1.0.0")
+
     implementation(project(":ui"))
     implementation(project(":remote"))
     implementation(project(":domain"))
