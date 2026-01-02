@@ -1,11 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.devtools.ksp")
 }
 
 android {
-    namespace = "brandy.newcld.pokemon.remote"
-    compileSdk = 34
+    namespace = "brandy.newcld.pokemon.local"
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
@@ -33,16 +34,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
-
-    // paging
-    implementation(libs.androidx.paging.runtime)
-
-    // network
-    implementation(libs.okhttp)
-    implementation(libs.okhttp.logging.interceptor)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.converter.gson)
+    // room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
 
     // hilt
     implementation(libs.hilt.android)
