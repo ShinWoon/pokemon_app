@@ -3,6 +3,7 @@ package brandy.newcld.pokemon.local.di
 import android.content.Context
 import androidx.room.Room
 import brandy.newcld.pokemon.local.room.AppDatabase
+import brandy.newcld.pokemon.local.room.PokemonDao
 import brandy.newcld.pokemon.local.room.RoomConstant
 import dagger.Module
 import dagger.Provides
@@ -23,4 +24,10 @@ internal object LocalRoomModule {
             klass = AppDatabase::class,
             name = RoomConstant.ROOM_DB_NAME
         )
+            .createFromAsset("")
+            .build()
+
+    @Provides
+    @Singleton
+    fun providePokemonDao(database: AppDatabase): PokemonDao = database.pokemonDao()
 }

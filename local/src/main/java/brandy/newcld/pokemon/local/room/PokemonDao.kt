@@ -3,6 +3,7 @@ package brandy.newcld.pokemon.local.room
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import brandy.newcld.pokemon.local.model.PokemonKoreanName
 
 @Dao
 interface PokemonDao {
