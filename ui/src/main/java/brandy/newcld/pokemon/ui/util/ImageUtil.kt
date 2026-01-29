@@ -4,9 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.palette.graphics.Palette
 import brandy.newcld.pokemon.ui.theme.DefaultLightGray
 import brandy.newcld.pokemon.ui.util.ColorUtil.toPastelColor
@@ -39,35 +37,49 @@ object ImageUtil {
     fun PaletteBackgroundWithImage(
         modifier: Modifier = Modifier,
         imageUrl: String,
-        content: @Composable () -> Unit = {}
+        content: @Composable () -> Unit = {},
+        boxModifier: Modifier,
+        boxShape: RoundedCornerShape,
+        imageSize: Modifier,
+        order: String
     ) {
         val context = LocalContext.current
         var backgroundColor by remember { mutableStateOf(DefaultLightGray) }
         Box(
-            modifier = modifier
-                .size(176.dp)
-                .background(
-                    color = backgroundColor,
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(12.dp),
+            modifier = boxModifier.background(color = backgroundColor, shape = boxShape)
         ) {
-            Column(
-                modifier = modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // 이미지 렌더링 (색 추출 X)
-                AsyncImage(
-                    model = ImageRequest.Builder(context)
-                        .data(imageUrl)
-                        .build(),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = modifier.size(100.dp)
+            if(order.lowercase() == "column") {
+                OrderByColumn(
+                    content =  {
+                        // 이미지 렌더링 (색 추출 X)
+                        AsyncImage(
+                            model = ImageRequest.Builder(context)
+                                .data(imageUrl)
+                                .build(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = imageSize
+                        )
+                        content()
+                    }
                 )
-                content()
+            } else {
+                OrderByRow(
+                    content = {
+                        // 이미지 렌더링 (색 추출 X)
+                        AsyncImage(
+                            model = ImageRequest.Builder(context)
+                                .data(imageUrl)
+                                .build(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = imageSize
+                        )
+                        content()
+                    }
+                )
             }
+
         }
 
         // Coil로 비트맵을 직접 불러와 Palette 돌린다
@@ -94,6 +106,34 @@ object ImageUtil {
                     backgroundColor = Color(pastelColor)
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun OrderByRow(
+        modifier: Modifier = Modifier,
+        content: @Composable () -> Unit
+    ) {
+        Row(
+            modifier = modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom,
+        ) {
+            content()
+        }
+    }
+
+    @Composable
+    private fun OrderByColumn(
+        modifier: Modifier = Modifier,
+        content: @Composable () -> Unit
+    ) {
+        Column(
+            modifier = modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            content()
         }
     }
 }

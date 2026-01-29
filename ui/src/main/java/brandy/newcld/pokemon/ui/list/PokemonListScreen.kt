@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,10 +30,9 @@ private const val TAG = "PokemonListScreen"
 fun PokemonListScreen(
     modifier: Modifier = Modifier,
     pokemonListViewModel: PokemonListViewModel,
+    onItemClick : (pid: Int) -> Unit
 ) {
     val items = pokemonListViewModel.pokemonList.collectAsLazyPagingItems()
-    val listState = rememberLazyGridState()
-    val isScrolling = listState.isScrollInProgress
 
     LaunchedEffect(Unit) {
         pokemonListViewModel.getPokemonList()
@@ -54,7 +53,7 @@ fun PokemonListScreen(
             if(pokemon != null) {
                 PokemonListItem(
                     modifier = modifier,
-                    onClick = {  },
+                    onClick = { onItemClick(pokemon.id) },
                     pokemonItem = pokemon
                 )
             }
@@ -78,14 +77,19 @@ fun PokemonListItem(
     ) {
         PaletteBackgroundWithImage(
             imageUrl = pokemonItem.imageUrl,
-            modifier = modifier
-        ) {
-            Spacer(modifier = modifier.size(4.dp))
-            Text(
-                text = pokemonItem.name,
-                style = Typography.titleMedium,
-                color = Color.White
+            modifier = modifier,
+            boxModifier = modifier.size(176.dp),
+            boxShape = RoundedCornerShape(16.dp),
+            imageSize = modifier.size(100.dp),
+            order = "column",
+            content = {
+                Spacer(modifier = modifier.size(4.dp))
+                Text(
+                    text = pokemonItem.name,
+                    style = Typography.titleMedium,
+                    color = Color.White
                 )
-        }
+            }
+        )
     }
 }
