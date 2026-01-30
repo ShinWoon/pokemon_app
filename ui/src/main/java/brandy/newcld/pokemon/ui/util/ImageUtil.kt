@@ -40,7 +40,7 @@ object ImageUtil {
         content: @Composable () -> Unit = {},
         boxModifier: Modifier,
         boxShape: RoundedCornerShape,
-        imageSize: Modifier,
+        imageModifier: Modifier,
         order: String
     ) {
         val context = LocalContext.current
@@ -58,7 +58,7 @@ object ImageUtil {
                                 .build(),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
-                            modifier = imageSize
+                            modifier = imageModifier
                         )
                         content()
                     }
@@ -73,7 +73,8 @@ object ImageUtil {
                                 .build(),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
-                            modifier = imageSize
+                            modifier = imageModifier,
+                            alignment = Alignment.BottomCenter
                         )
                         content()
                     }

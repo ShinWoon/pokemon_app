@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -22,15 +23,12 @@ import brandy.newcld.pokemon.ui.list.PokemonListScreen
 
 @Composable
 fun AppNavHost(
-    innerPadding: PaddingValues,
     navController: NavHostController = rememberNavController(),
-    startDestination: String
+    startDestination: String,
+    onDetailHeaderAnchor: (LayoutCoordinates) -> Unit,
+    onDetailFraction: (Float) -> Unit,
 ) {
-    var nestedScrollConnection by remember { mutableStateOf<NestedScrollConnection?>(null) }
-    var collapsedFraction by remember { mutableFloatStateOf(0f) }
-
     NavHost(
-        modifier = Modifier.padding(innerPadding),
         navController = navController,
         startDestination = startDestination,
     ) {
@@ -47,8 +45,8 @@ fun AppNavHost(
             val pid = backStackEntry.arguments?.getInt("pid")
 
             PokemonDetailScreen(
-                onProvideNestedScroll = { nestedScrollConnection = it },
-                onCollapsedFraction = { collapsedFraction = it },
+                onCollapsedFraction = onDetailFraction,
+                onExpandedTitleCoords = onDetailHeaderAnchor,
                 pid = pid
             )
         }

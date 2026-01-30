@@ -80,7 +80,7 @@ fun PokemonListItem(
             modifier = modifier,
             boxModifier = modifier.size(176.dp),
             boxShape = RoundedCornerShape(16.dp),
-            imageSize = modifier.size(100.dp),
+            imageModifier = modifier.size(100.dp),
             order = "column",
             content = {
                 Spacer(modifier = modifier.size(4.dp))
