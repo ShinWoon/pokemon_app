@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -18,7 +17,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import brandy.newcld.pokemon.ui.nav.AppNavHost
 import brandy.newcld.pokemon.ui.theme.PokemonAppTheme
-import brandy.newcld.pokemon.ui.util.AnimationUtil.MovingTitleOverlay
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -48,14 +46,6 @@ class MainActivity : ComponentActivity() {
                             onDetailHeaderAnchor = { expandedTitleCoords = it },
                             onDetailFraction = { collapsedFraction = it }
                         )
-
-                        MovingTitleOverlay(
-                            fraction = collapsedFraction,
-                            expanded = expandedTitleCoords,
-                            collapsed = collapsedTitleCoords
-                        ) {
-                            Text("title")
-                        }
                     }
                 }
             }

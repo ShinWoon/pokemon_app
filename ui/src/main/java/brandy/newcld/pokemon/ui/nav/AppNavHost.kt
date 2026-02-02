@@ -25,8 +25,6 @@ import brandy.newcld.pokemon.ui.list.PokemonListScreen
 fun AppNavHost(
     navController: NavHostController = rememberNavController(),
     startDestination: String,
-    onDetailHeaderAnchor: (LayoutCoordinates) -> Unit,
-    onDetailFraction: (Float) -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -45,8 +43,6 @@ fun AppNavHost(
             val pid = backStackEntry.arguments?.getInt("pid")
 
             PokemonDetailScreen(
-                onCollapsedFraction = onDetailFraction,
-                onExpandedTitleCoords = onDetailHeaderAnchor,
                 pid = pid
             )
         }

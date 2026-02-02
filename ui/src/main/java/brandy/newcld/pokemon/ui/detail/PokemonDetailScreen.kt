@@ -27,8 +27,6 @@ import androidx.compose.ui.unit.dp
 fun PokemonDetailScreen(
     modifier: Modifier = Modifier,
     pid: Int? = 1,
-    onCollapsedFraction: (Float) -> Unit,
-    onExpandedTitleCoords: (LayoutCoordinates) -> Unit,
 ) {
     val listState = rememberLazyListState()
     val density = LocalDensity.current
@@ -50,10 +48,6 @@ fun PokemonDetailScreen(
 
     val fraction by remember { derivedStateOf { (collapsePx/rangePx).coerceIn(0f, 1f) } }
 
-    // main에 fraction 전달
-    LaunchedEffect(fraction) {
-        onCollapsedFraction(fraction)
-    }
 
     val headerHeight = maxHeight - with(density) { collapsePx.toDp() }
 
@@ -74,12 +68,10 @@ fun PokemonDetailScreen(
         CollapsingAppBar(
             fraction = fraction,
             pid = pid,
-            imageHeight = maxHeight,
             boxModifier = modifier
                 .fillMaxWidth()
                 .height(headerHeight)
                 .clipToBounds(),
-            onExpandedTitleCoords = onExpandedTitleCoords
         )
 
     }

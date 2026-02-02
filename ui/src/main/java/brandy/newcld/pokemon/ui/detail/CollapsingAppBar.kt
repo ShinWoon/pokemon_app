@@ -11,8 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.LayoutCoordinates
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import brandy.newcld.pokemon.ui.util.ImageUtil.PaletteBackgroundWithImage
 import kotlin.math.pow
@@ -22,9 +20,7 @@ fun CollapsingAppBar (
     modifier: Modifier = Modifier,
     fraction: Float = 0f,
     boxModifier: Modifier,
-    imageHeight: Dp,
     pid: Int? = 1,
-    onExpandedTitleCoords: (LayoutCoordinates) -> Unit
 ) {
     Box(
         modifier = boxModifier
@@ -47,10 +43,11 @@ fun CollapsingAppBar (
                     modifier = modifier.padding(16.dp).graphicsLayer(alpha = 1f - fraction),
                     horizontalAlignment = Alignment.Start,
                 ) {
-                    Text("한글 이름")
+                    HeaderTitleMoveToAppBarApprox(
+                        title = "한글이름",
+                        fraction = fraction
+                    )
                     Text("영어 이름")
-
-                    DetailHeaderTitleAnchor(title = "한글이름", onCoords = { onExpandedTitleCoords(it)})
                 }
             }
         )
