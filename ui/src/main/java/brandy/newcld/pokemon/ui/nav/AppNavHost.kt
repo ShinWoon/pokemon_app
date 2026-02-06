@@ -1,16 +1,13 @@
 package brandy.newcld.pokemon.ui.nav
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -25,12 +22,25 @@ import brandy.newcld.pokemon.ui.list.PokemonListScreen
 fun AppNavHost(
     navController: NavHostController = rememberNavController(),
     startDestination: String,
+    onClickBack: () -> Unit,
 ) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
     ) {
-        composable("pokemon_list") {
+        composable(
+            route = "pokemon_list",
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(300, easing = LinearEasing)
+                ) + slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            }
+        ) {
             PokemonListScreen(
                 pokemonListViewModel = hiltViewModel(),
                 onItemClick = { pid -> navController.navigate("pokemon_detail/${pid}") }
@@ -38,12 +48,21 @@ fun AppNavHost(
         }
         composable(
             route = "pokemon_detail/{pid}",
-            arguments = listOf(navArgument("pid"){ type = NavType.IntType })
+            arguments = listOf(navArgument("pid"){ type = NavType.IntType }),
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(300, easing = LinearEasing)
+                ) + slideIntoContainer(
+                    animationSpec = tween(300, easing = EaseIn),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            }
         ) { backStackEntry ->
             val pid = backStackEntry.arguments?.getInt("pid")
 
             PokemonDetailScreen(
-                pid = pid
+                pid = pid,
+                onClickBack = onClickBack
             )
         }
     }

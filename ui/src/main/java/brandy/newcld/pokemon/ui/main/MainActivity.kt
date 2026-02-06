@@ -30,21 +30,14 @@ class MainActivity : ComponentActivity() {
                 val currentRoute = navBackStackEntry?.destination?.route
                 val startDestination = "pokemon_list"
 
-                var collapsedFraction by remember { mutableFloatStateOf(0f) }
-                var expandedTitleCoords by remember { mutableStateOf<LayoutCoordinates?>(null) }
-                var collapsedTitleCoords by remember { mutableStateOf<LayoutCoordinates?>(null) }
-
-                Scaffold(
-                    topBar = { MainAppBar(currentRoute = currentRoute, onClickBack = {navController.popBackStack()}, onCoords = { collapsedTitleCoords = it}) }
-                ) { innerPadding ->
+                Scaffold { innerPadding ->
                     Box(
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         AppNavHost(
                             navController = navController,
                             startDestination = startDestination,
-                            onDetailHeaderAnchor = { expandedTitleCoords = it },
-                            onDetailFraction = { collapsedFraction = it }
+                            onClickBack = { navController.popBackStack() }
                         )
                     }
                 }
