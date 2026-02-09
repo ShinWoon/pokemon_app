@@ -1,12 +1,7 @@
 package brandy.newcld.pokemon.ui.util
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,19 +9,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.palette.graphics.Palette
 import brandy.newcld.pokemon.ui.theme.DefaultLightGray
 import brandy.newcld.pokemon.ui.util.ColorUtil.toPastelColor
 import coil3.Bitmap
 import coil3.ImageLoader
-import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import coil3.request.allowHardware
@@ -36,38 +27,20 @@ import kotlinx.coroutines.withContext
 
 object ImageUtil {
     @Composable
-    fun PaletteBackgroundWithImage(
+    fun PaletteBackground(
         modifier: Modifier = Modifier,
+        boxModifier: Modifier,
+        boxShape: RoundedCornerShape,
+        pid: Int,
         imageUrl: String,
-        content: @Composable () -> Unit = {}
+        content: @Composable () -> Unit = {},
     ) {
         val context = LocalContext.current
         var backgroundColor by remember { mutableStateOf(DefaultLightGray) }
         Box(
-            modifier = modifier
-                .size(176.dp)
-                .background(
-                    color = backgroundColor,
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(12.dp),
+            modifier = boxModifier.background(color = backgroundColor, shape = boxShape)
         ) {
-            Column(
-                modifier = modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // 이미지 렌더링 (색 추출 X)
-                AsyncImage(
-                    model = ImageRequest.Builder(context)
-                        .data(imageUrl)
-                        .build(),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = modifier.size(100.dp)
-                )
-                content()
-            }
+            content()
         }
 
         // Coil로 비트맵을 직접 불러와 Palette 돌린다

@@ -10,6 +10,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import brandy.newcld.pokemon.ui.R
@@ -28,7 +29,7 @@ fun MainAppBar(
             Text(
                 text = "포켓몬 도감",
                 style = Typography.titleLarge,
-                color = Secondary
+                color = Secondary,
             )
         },
         modifier = Modifier
