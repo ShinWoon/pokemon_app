@@ -29,10 +29,11 @@ object ImageUtil {
     @Composable
     fun PaletteBackground(
         modifier: Modifier = Modifier,
-        imageUrl: String,
-        content: @Composable () -> Unit = {},
         boxModifier: Modifier,
         boxShape: RoundedCornerShape,
+        pid: Int,
+        imageUrl: String,
+        content: @Composable () -> Unit = {},
     ) {
         val context = LocalContext.current
         var backgroundColor by remember { mutableStateOf(DefaultLightGray) }

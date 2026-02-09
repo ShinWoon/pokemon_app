@@ -28,7 +28,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import brandy.newcld.pokemon.presentation.model.PokemonListItemModel
 import brandy.newcld.pokemon.presentation.viewmodel.PokemonListViewModel
 import brandy.newcld.pokemon.ui.theme.Background
-import brandy.newcld.pokemon.ui.theme.Primary
 import brandy.newcld.pokemon.ui.theme.Secondary
 import brandy.newcld.pokemon.ui.theme.Typography
 import brandy.newcld.pokemon.ui.util.ImageUtil.PaletteBackground
@@ -49,7 +48,7 @@ fun PokemonListScreen(
     LaunchedEffect(Unit) {
         pokemonListViewModel.getPokemonList()
     }
-    Column() {
+    Column {
         TopAppBar(
             title = {
                 Text(
@@ -108,6 +107,7 @@ fun PokemonListItem(
             modifier = modifier,
             boxModifier = modifier.size(176.dp),
             boxShape = RoundedCornerShape(16.dp),
+            pid = pokemonItem.id,
             content = {
                 Column(
                     modifier = modifier.fillMaxSize(),

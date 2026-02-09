@@ -62,6 +62,7 @@ fun AppNavHost(
 
             PokemonDetailScreen(
                 pid = pid,
+                pokemonDetailViewModel = hiltViewModel(),
                 onClickBack = onClickBack
             )
         }
