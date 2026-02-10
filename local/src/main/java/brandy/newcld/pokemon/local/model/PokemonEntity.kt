@@ -7,11 +7,9 @@ import brandy.newcld.pokemon.local.room.RoomConstant.Table.POKEMON
 
 @Entity(tableName = POKEMON)
 data class PokemonEntity (
-    @PrimaryKey val pId: Int,
+    @PrimaryKey @ColumnInfo(name = "id") val pId: Int,
     @ColumnInfo(name = "eng_name") val engName: String?,
     @ColumnInfo(name = "ko_name") val koName: String?,
-    @ColumnInfo(name = "eng_genus") val engGenus: String?,
-    @ColumnInfo(name = "ko_genus") val koGenus: String?,
     @ColumnInfo(name = "day_time_color") val dayTimeColor: String?,
     @ColumnInfo(name = "night_time_color") val nightTimeColor: String?,
 )

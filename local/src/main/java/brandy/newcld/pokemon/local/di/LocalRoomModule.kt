@@ -21,10 +21,10 @@ internal object LocalRoomModule {
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase =
         Room.databaseBuilder(
             context = context,
-            klass = AppDatabase::class,
+            klass = AppDatabase::class.java,
             name = RoomConstant.ROOM_DB_NAME
         )
-            .createFromAsset("")
+            .createFromAsset("pokemon.db")
             .build()
 
     @Provides

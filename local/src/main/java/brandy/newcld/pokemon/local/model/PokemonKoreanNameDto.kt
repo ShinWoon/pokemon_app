@@ -1,6 +1,6 @@
 package brandy.newcld.pokemon.local.model
 
-data class PokemonKoreanName (
+data class PokemonKoreanNameDto (
     val pid: Int,
     val koName: String
 )

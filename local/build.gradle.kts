@@ -38,6 +38,9 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
 
+    // gson
+    implementation(libs.gson)
+
     // hilt
     implementation(libs.hilt.android)
 }
