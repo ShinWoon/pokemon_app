@@ -34,6 +34,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
+
     // room
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
