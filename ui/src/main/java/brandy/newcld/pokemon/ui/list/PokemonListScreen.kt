@@ -80,7 +80,8 @@ fun PokemonListScreen(
                     PokemonListItem(
                         modifier = modifier,
                         onClick = { onItemClick(pokemon.id) },
-                        pokemonItem = pokemon
+                        pokemonItem = pokemon,
+                        backgroundColors =
                     )
                 }
             }
@@ -93,6 +94,7 @@ fun PokemonListItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     pokemonItem: PokemonListItemModel,
+    backgroundColors: Map<String, String> = emptyMap()
 ) {
     Box(
         modifier = modifier
@@ -108,6 +110,7 @@ fun PokemonListItem(
             boxModifier = modifier.size(176.dp),
             boxShape = RoundedCornerShape(16.dp),
             pid = pokemonItem.id,
+            backgroundColors = backgroundColors,
             content = {
                 Column(
                     modifier = modifier.fillMaxSize(),

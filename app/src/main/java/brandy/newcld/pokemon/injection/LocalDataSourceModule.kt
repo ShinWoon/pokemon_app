@@ -1,4 +1,4 @@
-package brandy.newcld.pokemon.local.di
+package brandy.newcld.pokemon.injection
 
 import brandy.newcld.pokemon.data.local.PokemonLocalDataSource
 import brandy.newcld.pokemon.local.impl.LocalDataSourceImpl

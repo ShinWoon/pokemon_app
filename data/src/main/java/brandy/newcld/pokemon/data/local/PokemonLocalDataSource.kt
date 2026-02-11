@@ -7,4 +7,6 @@ interface PokemonLocalDataSource {
     suspend fun getPokemonAppBarInfo(pid: Int): PokemonAppBarEntity
 
     suspend fun getPokemonKoreanName(pid: Int): PokemonKoreanNameEntity
+
+    suspend fun updateBackgroundColors(pid: Int, dayTimeColor: String, nightTimeColor: String)
 }

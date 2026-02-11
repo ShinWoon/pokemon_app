@@ -23,9 +23,9 @@ interface PokemonDao {
     @Query("SELECT night_time_color FROM ${RoomConstant.ROOM_DB_NAME} WHERE id = :pid")
     fun getPokemonNightTimeColor(pid: Int): Flow<String>
 
-    @Query("UPDATE ${RoomConstant.ROOM_DB_NAME} SET day_time_color = :dayTimeColor WHERE id = :pid")
-    fun updateDayTimeColor(pid: Int, dayTimeColor: String)
+    @Query("UPDATE ${RoomConstant.ROOM_DB_NAME} SET day_time_color = :dayTimeColor, night_time_color = :nightTimeColor WHERE id = :pid")
+    fun updateColor(pid: Int, dayTimeColor: String, nightTimeColor: String)
 
-    @Query("UPDATE ${RoomConstant.ROOM_DB_NAME} SET night_time_color = :nightTimeColor WHERE id = :pid")
-    fun updateNightTimeColor(pid: Int, nightTimeColor: String)
+    @Query("SELECT COUNT(*) FROM pokemon")
+    suspend fun count(): Int
 }

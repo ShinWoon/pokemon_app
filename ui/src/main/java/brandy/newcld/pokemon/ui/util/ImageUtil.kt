@@ -33,6 +33,7 @@ object ImageUtil {
         boxShape: RoundedCornerShape,
         pid: Int,
         imageUrl: String,
+        backgroundColors: Map<String, String> = emptyMap(),
         content: @Composable () -> Unit = {},
     ) {
         val context = LocalContext.current

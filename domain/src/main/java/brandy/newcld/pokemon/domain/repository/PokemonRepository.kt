@@ -10,4 +10,6 @@ interface PokemonRepository {
     fun getPokemonInfo(id: Int): Flow<DataResource<PokemonInfo>>
 
     fun getPokemonList(): Flow<PagingData<NameUrl>>
+
+    fun updateBackgroundColors(pid: Int, dayTimeColor: String, nightTimeColor: String): Flow<DataResource<Unit>>
 }
