@@ -15,6 +15,7 @@ private val LightColors: ColorScheme = lightColorScheme(
 
 private val DarkColors: ColorScheme = darkColorScheme(
     // 필요 시 다크 전용 색상 추가/조정
+    background = DarkModeBackground
 )
 
 @Composable

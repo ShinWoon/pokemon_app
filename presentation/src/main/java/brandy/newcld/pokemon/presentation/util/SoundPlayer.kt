@@ -1,4 +1,4 @@
-package brandy.newcld.pokemon.presentation.viewmodel
+package brandy.newcld.pokemon.presentation.util
 
 interface SoundPlayer {
     fun play(url: String)

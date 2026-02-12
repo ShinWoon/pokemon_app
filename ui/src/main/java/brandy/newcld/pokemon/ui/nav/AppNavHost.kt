@@ -43,7 +43,8 @@ fun AppNavHost(
         ) {
             PokemonListScreen(
                 pokemonListViewModel = hiltViewModel(),
-                onItemClick = { pid -> navController.navigate("pokemon_detail/${pid}") }
+                onItemClick = { pid -> navController.navigate("pokemon_detail/${pid}") },
+
             )
         }
         composable(

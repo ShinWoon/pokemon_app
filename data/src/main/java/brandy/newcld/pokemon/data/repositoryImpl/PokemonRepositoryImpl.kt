@@ -3,14 +3,17 @@ package brandy.newcld.pokemon.data.repositoryImpl
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
 import brandy.newcld.pokemon.data.bound.flowDataResource
 import brandy.newcld.pokemon.data.local.PokemonLocalDataSource
 import brandy.newcld.pokemon.data.remote.PokemonListPagingSource
 import brandy.newcld.pokemon.data.remote.PokemonRemoteDataSource
+import brandy.newcld.pokemon.data.toDomainModel
 import brandy.newcld.pokemon.data.toDomainPaging
 import brandy.newcld.pokemon.dataresource.DataResource
 import brandy.newcld.pokemon.domain.model.NameUrl
 import brandy.newcld.pokemon.domain.model.PokemonInfo
+import brandy.newcld.pokemon.domain.model.PokemonListItemLocal
 import brandy.newcld.pokemon.domain.repository.PokemonRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -37,4 +40,14 @@ class PokemonRepositoryImpl @Inject constructor(
         dayTimeColor: String,
         nightTimeColor: String
     ): Flow<DataResource<Unit>> = flowDataResource { localDataSource.updateBackgroundColors(pid, dayTimeColor, nightTimeColor) }
+
+    override fun getPokemonLocalPaging(): Flow<PagingData<PokemonListItemLocal>> = Pager(
+        config = PagingConfig (
+            pageSize = 40,
+            enablePlaceholders = false
+        )) {
+            localDataSource.getLocalPaging()
+        }.flow.map {
+            it.map { entity -> entity.toDomainModel()}
+        }
 }

@@ -8,5 +8,5 @@ import javax.inject.Inject
 class UpdateBackgroundColorsUseCase @Inject constructor(
     private val pokemonRepository: PokemonRepository
 ){
-    operator fun invoke(pid: Int, dayTimeColor: String, nightTimeColor: String): Flow<DataResource<Unit>> = pokemonRepository.updateBackgroundColors(pid, dayTimeColor, nightTimeColor)
+    operator fun invoke(pid: Int, dayTimeColor: Int, nightTimeColor: Int): Flow<DataResource<Unit>> = pokemonRepository.updateBackgroundColors(pid, dayTimeColor.toString(), nightTimeColor.toString())
 }

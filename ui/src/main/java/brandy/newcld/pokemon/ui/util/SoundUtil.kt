@@ -3,7 +3,7 @@ package brandy.newcld.pokemon.ui.util
 import android.content.Context
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
-import brandy.newcld.pokemon.presentation.viewmodel.SoundPlayer
+import brandy.newcld.pokemon.presentation.util.SoundPlayer
 
 class AppSoundPlayer(context: Context): SoundPlayer {
     private val player = ExoPlayer.Builder(context).build()

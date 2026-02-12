@@ -1,8 +1,9 @@
 package brandy.newcld.pokemon.local.impl
 
+import androidx.paging.PagingSource
 import brandy.newcld.pokemon.data.local.PokemonLocalDataSource
 import brandy.newcld.pokemon.data.model.PokemonAppBarEntity
-import brandy.newcld.pokemon.data.model.PokemonKoreanNameEntity
+import brandy.newcld.pokemon.data.model.PokemonListItemLocalEntity
 import brandy.newcld.pokemon.local.room.PokemonDao
 import brandy.newcld.pokemon.local.toData
 import javax.inject.Inject
@@ -13,8 +14,7 @@ class LocalDataSourceImpl @Inject constructor(
     override suspend fun getPokemonAppBarInfo(pid: Int): PokemonAppBarEntity =
         pokemonDao.getAll(pid = pid).toData()
 
-    override suspend fun getPokemonKoreanName(pid: Int): PokemonKoreanNameEntity =
-        pokemonDao.getPokemonKoreanNameList().toData()
+    override fun getLocalPaging(): PagingSource<Int, PokemonListItemLocalEntity> = pokemonDao.getLocalPaging().toData()
 
     override suspend fun updateBackgroundColors(
         pid: Int,

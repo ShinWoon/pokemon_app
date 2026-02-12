@@ -26,12 +26,14 @@ palette = "1.0.0"
 retrofit = "2.11.0"
 media3Exoplayer = "1.8.0"
 roomCompiler = "2.8.4"
+roomPaging = "2.6.1"
 roomRuntime = "2.8.4"
 
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomPaging" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 inject = { group = "javax.inject", name = "javax.inject", version.ref = "javaxInject"}
