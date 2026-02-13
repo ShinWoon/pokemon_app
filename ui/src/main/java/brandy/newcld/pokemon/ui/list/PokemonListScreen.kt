@@ -1,5 +1,6 @@
 package brandy.newcld.pokemon.ui.list
 
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,7 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
-import brandy.newcld.pokemon.presentation.model.PokemonItemModel
+import brandy.newcld.pokemon.presentation.model.PokemonItemLocalModel
 import brandy.newcld.pokemon.presentation.viewmodel.PokemonListViewModel
 import brandy.newcld.pokemon.ui.theme.Background
 import brandy.newcld.pokemon.ui.theme.DarkModeBackground
@@ -34,15 +35,16 @@ fun PokemonListScreen(
     modifier: Modifier = Modifier,
     pokemonListViewModel: PokemonListViewModel,
     onItemClick : (pid: Int) -> Unit,
-    pokemonItemModel: PokemonItemModel
 ) {
     val items = pokemonListViewModel.pokemonList.collectAsLazyPagingItems()
+    val localItems = pokemonListViewModel.pokemonLocalItemList.collectAsLazyPagingItems()
     val tmpMap by pokemonListViewModel.bgColors.collectAsState()
 
     val isDarkMode = isSystemInDarkTheme()
 
     LaunchedEffect(Unit) {
         pokemonListViewModel.getPokemonList()
+        pokemonListViewModel.getPokemonLocalList()
     }
     Column {
         TopAppBar(
@@ -72,15 +74,17 @@ fun PokemonListScreen(
                 key = { index -> items[index]?.id ?: index },
             ) { index ->
                 val pokemon = items[index]
-                val tmp = tmpMap[index]
-                if(pokemon != null) {
+                Log.d(TAG, "PokemonListScreen: ${localItems.toString()}")
+                val pokemonLocal = localItems[index]
+                val tmp = tmpMap[pokemon?.id ?: 1]
+                if(pokemon != null && pokemonLocal != null) {
                     PokemonListItem(
                         modifier = modifier,
                         onClick = { onItemClick(pokemon.id) },
                         pokemonItem = pokemon,
                         isDarkMode = isDarkMode,
                         tmpBgColors = tmp,
-                        pokemonItemModel = pokemonItemModel,
+                        pokemonItemLocalModel = pokemonLocal,
                         onColorExtracted = { color -> pokemonListViewModel.onColorExtracted(pokemon.id, color) }
                     )
                 }

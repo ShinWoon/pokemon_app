@@ -5,10 +5,13 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import brandy.newcld.pokemon.domain.usecase.GetPokemonListUseCase
+import brandy.newcld.pokemon.domain.usecase.GetPokemonLocalPagingUseCase
 import brandy.newcld.pokemon.domain.usecase.UpdateBackgroundColorsUseCase
 import brandy.newcld.pokemon.presentation.model.DayNight
+import brandy.newcld.pokemon.presentation.model.PokemonItemLocalModel
 import brandy.newcld.pokemon.presentation.model.PokemonListItemModel
 import brandy.newcld.pokemon.presentation.model.UiState
+import brandy.newcld.pokemon.presentation.model.toPokemonItemLocalModel
 import brandy.newcld.pokemon.presentation.model.toPokemonListItemModel
 import brandy.newcld.pokemon.presentation.util.ColorUtil.toDarkerColor
 import brandy.newcld.pokemon.presentation.util.ColorUtil.toPastelColor
@@ -24,6 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PokemonListViewModel @Inject constructor(
     private val getPokemonListUseCase: GetPokemonListUseCase,
+    private val getPokemonLocalPagingUseCase: GetPokemonLocalPagingUseCase,
     private val updateBackgroundColorsUseCase: UpdateBackgroundColorsUseCase
 ): BaseViewModel() {
     private val _pokemonList = MutableStateFlow<PagingData<PokemonListItemModel>>(PagingData.empty())
@@ -35,6 +39,8 @@ class PokemonListViewModel @Inject constructor(
     private val _bgColors = MutableStateFlow<Map<Int, DayNight>>(emptyMap())
     val bgColors = _bgColors.asStateFlow()
 
+    private val _pokemonLocalItemList = MutableStateFlow<PagingData<PokemonItemLocalModel>>(PagingData.empty())
+    val pokemonLocalItemList = _pokemonLocalItemList.asStateFlow()
 
     fun getPokemonList() {
         viewModelScope.launch {
@@ -62,6 +68,21 @@ class PokemonListViewModel @Inject constructor(
                 state = _updateState,
                 mapper = { pid }
             )
+        }
+    }
+
+    fun getPokemonLocalList() {
+        viewModelScope.launch {
+            getPokemonLocalPagingUseCase()
+                .map {
+                it.map { pokemon ->
+                    pokemon.toPokemonItemLocalModel()
+                }
+            }
+                .cachedIn(viewModelScope)
+                .collectLatest { pagingData ->
+                _pokemonLocalItemList.value = pagingData
+            }
         }
     }
 

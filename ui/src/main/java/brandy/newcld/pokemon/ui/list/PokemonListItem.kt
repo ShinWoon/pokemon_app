@@ -19,7 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import brandy.newcld.pokemon.presentation.model.DayNight
-import brandy.newcld.pokemon.presentation.model.PokemonItemModel
+import brandy.newcld.pokemon.presentation.model.PokemonItemLocalModel
 import brandy.newcld.pokemon.presentation.model.PokemonListItemModel
 import brandy.newcld.pokemon.ui.theme.DefaultLightGray
 import brandy.newcld.pokemon.ui.theme.Typography
@@ -32,13 +32,13 @@ fun PokemonListItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     pokemonItem: PokemonListItemModel,
-    pokemonItemModel: PokemonItemModel = PokemonItemModel(0,"","",":"),
+    pokemonItemLocalModel: PokemonItemLocalModel,
     tmpBgColors: DayNight?,
     isDarkMode: Boolean = false,
     onColorExtracted: (Int) -> Unit
 ) {
     val context = LocalContext.current
-    if (pokemonItemModel.dayTimeColor == null || pokemonItemModel.nightTimeColor == null) {
+    if (pokemonItemLocalModel.dayTimeColor != 0 || pokemonItemLocalModel.nightTimeColor != 0) {
         LaunchedEffect(pokemonItem.id) {
             val color = paletteBackgroundColor(pokemonItem.imageUrl, context)
             onColorExtracted(color)
@@ -46,10 +46,10 @@ fun PokemonListItem(
     }
 
     val backgroundColor = when {
-        isDarkMode && pokemonItemModel.nightTimeColor != null -> Color(pokemonItemModel.nightTimeColor!!.toInt())
-        !isDarkMode && pokemonItemModel.dayTimeColor != null -> Color(pokemonItemModel.dayTimeColor!!.toInt())
-        isDarkMode -> Color(tmpBgColors!!.night)
-        !isDarkMode -> Color(tmpBgColors!!.day)
+        isDarkMode && pokemonItemLocalModel.nightTimeColor != 0 -> Color(pokemonItemLocalModel.nightTimeColor)
+        !isDarkMode && pokemonItemLocalModel.dayTimeColor != 0 -> Color(pokemonItemLocalModel.dayTimeColor)
+        isDarkMode && tmpBgColors != null -> Color(tmpBgColors.night)
+        !isDarkMode && tmpBgColors != null -> Color(tmpBgColors.day)
         else -> DefaultLightGray
     }
 
@@ -77,7 +77,7 @@ fun PokemonListItem(
             )
             Spacer(modifier = modifier.size(4.dp))
             Text(
-                text = pokemonItem.name,
+                text = pokemonItemLocalModel.koName,
                 style = Typography.titleMedium,
                 color = Color.White
             )

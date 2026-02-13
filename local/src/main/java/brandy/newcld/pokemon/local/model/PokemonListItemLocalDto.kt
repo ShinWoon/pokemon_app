@@ -1,6 +1,8 @@
 package brandy.newcld.pokemon.local.model
 
 import androidx.room.ColumnInfo
+import brandy.newcld.pokemon.data.model.PokemonListItemLocalEntity
+import brandy.newcld.pokemon.local.LocalMapper
 
 data class PokemonListItemLocalDto (
     @ColumnInfo("id")
@@ -11,4 +13,7 @@ data class PokemonListItemLocalDto (
     val dayTimeColor: String?,
     @ColumnInfo("night_time_color")
     val nightTimeColor: String?
-)
+): LocalMapper<PokemonListItemLocalEntity> {
+    override fun toData(): PokemonListItemLocalEntity =
+        PokemonListItemLocalEntity(pid = pid, koName = koName, dayTimeColor = dayTimeColor, nightTimeColor = nightTimeColor)
+}

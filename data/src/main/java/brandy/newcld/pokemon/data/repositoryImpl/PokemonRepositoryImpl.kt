@@ -27,9 +27,9 @@ class PokemonRepositoryImpl @Inject constructor(
 
     override fun getPokemonList(): Flow<PagingData<NameUrl>> = Pager(
         config = PagingConfig (
-            pageSize = 40,
-            initialLoadSize = 60,
-            prefetchDistance = 30,
+            pageSize = 300,
+            initialLoadSize = 200,
+            prefetchDistance = 100,
             enablePlaceholders = false
         ),
         pagingSourceFactory = { PokemonListPagingSource(remoteDataSource) }
@@ -43,7 +43,7 @@ class PokemonRepositoryImpl @Inject constructor(
 
     override fun getPokemonLocalPaging(): Flow<PagingData<PokemonListItemLocal>> = Pager(
         config = PagingConfig (
-            pageSize = 40,
+            pageSize = 300,
             enablePlaceholders = false
         )) {
             localDataSource.getLocalPaging()
