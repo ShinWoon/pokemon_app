@@ -16,6 +16,7 @@ import brandy.newcld.pokemon.domain.model.PokemonInfo
 import brandy.newcld.pokemon.domain.model.PokemonListItemLocal
 import brandy.newcld.pokemon.domain.repository.PokemonRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -27,7 +28,7 @@ class PokemonRepositoryImpl @Inject constructor(
 
     override fun getPokemonList(): Flow<PagingData<NameUrl>> = Pager(
         config = PagingConfig (
-            pageSize = 300,
+            pageSize = PAGESIZE,
             initialLoadSize = 200,
             prefetchDistance = 100,
             enablePlaceholders = false
@@ -41,13 +42,11 @@ class PokemonRepositoryImpl @Inject constructor(
         nightTimeColor: String
     ): Flow<DataResource<Unit>> = flowDataResource { localDataSource.updateBackgroundColors(pid, dayTimeColor, nightTimeColor) }
 
-    override fun getPokemonLocalPaging(): Flow<PagingData<PokemonListItemLocal>> = Pager(
-        config = PagingConfig (
-            pageSize = 300,
-            enablePlaceholders = false
-        )) {
-            localDataSource.getLocalPaging()
-        }.flow.map {
-            it.map { entity -> entity.toDomainModel()}
-        }
+    override fun getPokemonLocalPaging(): Flow<PagingData<PokemonListItemLocal>> = localDataSource.getLocalPaging().map { paging ->
+        paging.map { data -> data.toDomainModel() }
+    }
+
+    companion object {
+        val PAGESIZE = 300
+    }
 }

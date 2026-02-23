@@ -1,10 +1,15 @@
 package brandy.newcld.pokemon.local.impl
 
-import androidx.paging.PagingSource
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import brandy.newcld.pokemon.data.local.PokemonLocalDataSource
 import brandy.newcld.pokemon.data.model.PokemonAppBarEntity
 import brandy.newcld.pokemon.data.model.PokemonListItemLocalEntity
 import brandy.newcld.pokemon.local.room.PokemonDao
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class LocalDataSourceImpl @Inject constructor(
@@ -13,7 +18,11 @@ class LocalDataSourceImpl @Inject constructor(
     override suspend fun getPokemonAppBarInfo(pid: Int): PokemonAppBarEntity =
         pokemonDao.getAll(pid = pid).toData()
 
-    override fun getLocalPaging(): PagingSource<Int, PokemonListItemLocalEntity> = pokemonDao.getLocalPaging()
+    override fun getLocalPaging(): Flow<PagingData<PokemonListItemLocalEntity>> = Pager(
+        config = PagingConfig(pageSize = 300, enablePlaceholders = false),
+        pagingSourceFactory = { pokemonDao.getLocalPaging() }
+    ).flow
+        .map { it.map { entity -> entity.toData() } }
 
     override suspend fun updateBackgroundColors(
         pid: Int,
