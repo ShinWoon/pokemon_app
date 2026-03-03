@@ -42,9 +42,7 @@ class PokemonRepositoryImpl @Inject constructor(
         nightTimeColor: String
     ): Flow<DataResource<Unit>> = flowDataResource { localDataSource.updateBackgroundColors(pid, dayTimeColor, nightTimeColor) }
 
-    override fun getPokemonLocalPaging(): Flow<PagingData<PokemonListItemLocal>> = localDataSource.getLocalPaging().map { paging ->
-        paging.map { data -> data.toDomainModel() }
-    }
+    override fun getPokemonLocalPaging(): Flow<PagingData<PokemonListItemLocal>> = localDataSource.getLocalPaging().map { it.toDomainModel() }
 
     companion object {
         val PAGESIZE = 300

@@ -38,7 +38,7 @@ fun PokemonListItem(
     onColorExtracted: (Int) -> Unit
 ) {
     val context = LocalContext.current
-    if (pokemonItemLocalModel.dayTimeColor != 0 || pokemonItemLocalModel.nightTimeColor != 0) {
+    if (pokemonItemLocalModel.dayTimeColor == 0 || pokemonItemLocalModel.nightTimeColor == 0) {
         LaunchedEffect(pokemonItem.id) {
             val color = paletteBackgroundColor(pokemonItem.imageUrl, context)
             onColorExtracted(color)
