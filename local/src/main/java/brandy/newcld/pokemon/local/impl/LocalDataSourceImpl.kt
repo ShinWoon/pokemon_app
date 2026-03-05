@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import brandy.newcld.pokemon.data.local.PokemonLocalDataSource
-import brandy.newcld.pokemon.data.model.PokemonAppBarEntity
+import brandy.newcld.pokemon.data.model.PokemonDetailLocalInfoEntity
 import brandy.newcld.pokemon.data.model.PokemonListItemLocalEntity
 import brandy.newcld.pokemon.local.room.PokemonDao
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class LocalDataSourceImpl @Inject constructor(
     private val pokemonDao: PokemonDao,
 ) : PokemonLocalDataSource {
-    override suspend fun getPokemonAppBarInfo(pid: Int): PokemonAppBarEntity =
+    override suspend fun getPokemonDetailLocalInfo(pid: Int): PokemonDetailLocalInfoEntity =
         pokemonDao.getAll(pid = pid).toData()
 
     override fun getLocalPaging(): Flow<PagingData<PokemonListItemLocalEntity>> = Pager(

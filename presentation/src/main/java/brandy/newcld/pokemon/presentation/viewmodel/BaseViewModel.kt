@@ -9,6 +9,7 @@ import brandy.newcld.pokemon.presentation.model.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -62,4 +63,23 @@ abstract class BaseViewModel: ViewModel() {
         }.flowOn(Dispatchers.IO)
             .launchIn(viewModelScope)
     }
+
+    /**
+     * DataResource 끼리 합치는 함수
+     */
+    protected fun <A, B, R> combineDataResource(
+        fa: Flow<DataResource<A>>,
+        fb: Flow<DataResource<B>>,
+        combiner: (A, B) -> R
+    ): Flow<DataResource<R>> =
+        combine(fa, fb) { ra, rb ->
+            when {
+                ra is DataResource.Error -> DataResource.Error(ra.throwable)
+                rb is DataResource.Error -> DataResource.Error(rb.throwable)
+                ra is DataResource.Loading || rb is DataResource.Loading -> DataResource.Loading()
+                ra is DataResource.Success && rb is DataResource.Success ->
+                    DataResource.Success(combiner(ra.data, rb.data))
+                else -> DataResource.Loading() // 안전망
+            }
+        }
 }

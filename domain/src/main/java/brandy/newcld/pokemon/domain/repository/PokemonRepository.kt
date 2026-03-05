@@ -3,6 +3,7 @@ package brandy.newcld.pokemon.domain.repository
 import androidx.paging.PagingData
 import brandy.newcld.pokemon.dataresource.DataResource
 import brandy.newcld.pokemon.domain.model.NameUrl
+import brandy.newcld.pokemon.domain.model.PokemonDetailLocalInfoItem
 import brandy.newcld.pokemon.domain.model.PokemonInfo
 import brandy.newcld.pokemon.domain.model.PokemonListItemLocal
 import kotlinx.coroutines.flow.Flow
@@ -15,4 +16,6 @@ interface PokemonRepository {
     fun updateBackgroundColors(pid: Int, dayTimeColor: String, nightTimeColor: String): Flow<DataResource<Unit>>
 
     fun getPokemonLocalPaging(): Flow<PagingData<PokemonListItemLocal>>
+
+    fun getPokemonDetailLocalInfo(pid: Int): Flow<DataResource<PokemonDetailLocalInfoItem>>
 }

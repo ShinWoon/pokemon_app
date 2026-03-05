@@ -1,12 +1,12 @@
 package brandy.newcld.pokemon.data.local
 
 import androidx.paging.PagingData
-import brandy.newcld.pokemon.data.model.PokemonAppBarEntity
+import brandy.newcld.pokemon.data.model.PokemonDetailLocalInfoEntity
 import brandy.newcld.pokemon.data.model.PokemonListItemLocalEntity
 import kotlinx.coroutines.flow.Flow
 
 interface PokemonLocalDataSource {
-    suspend fun getPokemonAppBarInfo(pid: Int): PokemonAppBarEntity
+    suspend fun getPokemonDetailLocalInfo(pid: Int): PokemonDetailLocalInfoEntity
 
     fun getLocalPaging(): Flow<PagingData<PokemonListItemLocalEntity>>
 
