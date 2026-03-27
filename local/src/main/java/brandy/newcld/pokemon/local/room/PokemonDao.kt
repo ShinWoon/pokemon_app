@@ -1,24 +1,19 @@
 package brandy.newcld.pokemon.local.room
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
-import brandy.newcld.pokemon.local.model.PokemonKoreanName
+import brandy.newcld.pokemon.local.model.PokemonDetailLocalInfoEntity
+import brandy.newcld.pokemon.local.model.PokemonListItemLocalDto
 
 @Dao
 interface PokemonDao {
-    @Query("SELECT pid, ko_name FROM pokemon")
-    fun getPokemonKoreanNameList(): List<PokemonKoreanName>
+    @Query("SELECT * FROM ${RoomConstant.ROOM_DB_NAME} ORDER BY id")
+    fun getLocalPaging(): PagingSource<Int, PokemonListItemLocalDto>
 
-    @Query("SELECT day_time_color FROM pokemon WHERE pid = :pid")
-    fun getPokemonDayTimeColor(pid: Int): String
+    @Query("SELECT * FROM ${RoomConstant.ROOM_DB_NAME} WHERE id = :pid")
+    fun getAll(pid: Int): PokemonDetailLocalInfoEntity
 
-    @Query("SELECT night_time_color FROM pokemon WHERE pid = :pid")
-    fun getPokemonNightTimeColor(pid: Int): String
-
-    @Insert
-    fun insertDayTimeColor(pid: Int, dayTimeColor: String)
-
-    @Insert
-    fun insertNightTimeColor(pid: Int, nightTimeColor: String)
+    @Query("UPDATE ${RoomConstant.ROOM_DB_NAME} SET day_time_color = :dayTimeColor, night_time_color = :nightTimeColor WHERE id = :pid")
+    fun updateColor(pid: Int, dayTimeColor: String, nightTimeColor: String)
 }

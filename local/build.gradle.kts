@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt.plugin)
     id("com.google.devtools.ksp")
 }
 
@@ -34,10 +35,20 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
+
     // room
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
 
+    // gson
+    implementation(libs.gson)
+
     // hilt
     implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
+    // paging
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.room.paging)
 }

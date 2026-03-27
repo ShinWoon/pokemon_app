@@ -36,5 +36,5 @@ class PokemonListPagingSource @Inject constructor(
         }
     }
 
-    private companion object { const val PAGE_SIZE = 20 }
+    private companion object { const val PAGE_SIZE = 300 }
 }
