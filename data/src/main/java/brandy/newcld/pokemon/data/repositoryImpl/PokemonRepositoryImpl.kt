@@ -47,6 +47,10 @@ class PokemonRepositoryImpl @Inject constructor(
         localDataSource.getPokemonDetailLocalInfo(pid = pid)
     }
 
+    override fun getPokemonSpecies(id: Int): Flow<DataResource<String>> = flowDataResource {
+        remoteDataSource.getPokemonSpecies(id)
+    }
+
     companion object {
         val PAGESIZE = 300
     }

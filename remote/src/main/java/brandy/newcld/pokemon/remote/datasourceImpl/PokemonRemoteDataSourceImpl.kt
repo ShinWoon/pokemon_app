@@ -22,4 +22,8 @@ class PokemonRemoteDataSourceImpl @Inject constructor(
     override suspend fun getPokemonInfo(id: Int): PokemonInfoEntity {
         return apiService.getPokemonInfo(id = id).toData()
     }
+
+    override suspend fun getPokemonSpecies(id: Int): String {
+        return apiService.getPokemonSpecies(id = id).getKoreanDescription()
+    }
 }

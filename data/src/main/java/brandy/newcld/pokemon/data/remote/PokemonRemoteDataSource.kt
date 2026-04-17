@@ -7,4 +7,6 @@ interface PokemonRemoteDataSource {
     suspend fun getPokemonList(limit: Int, offset: Int): List<NameUrlEntity>
 
     suspend fun getPokemonInfo(id: Int): PokemonInfoEntity
+
+    suspend fun getPokemonSpecies(id: Int): String
 }

@@ -18,4 +18,6 @@ interface PokemonRepository {
     fun getPokemonLocalPaging(): Flow<PagingData<PokemonListItemLocal>>
 
     fun getPokemonDetailLocalInfo(pid: Int): Flow<DataResource<PokemonDetailLocalInfoItem>>
+
+    fun getPokemonSpecies(id: Int): Flow<DataResource<String>>
 }
