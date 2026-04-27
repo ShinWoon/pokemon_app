@@ -1,21 +1,28 @@
 package brandy.newcld.pokemon.ui.detail
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
@@ -46,23 +53,56 @@ fun PokemonDetailScreen(
         }
     }
 
+    val localInfo by pokemonDetailViewModel.localAppBarInfoUiState.collectAsState()
+    val remoteInfo by pokemonDetailViewModel.remotePokemonInfoUiState.collectAsState()
+    val descriptionInfo by pokemonDetailViewModel.descriptionUiState.collectAsState()
+
     LaunchedEffect(Unit) {
-//        pokemonDetailViewModel.getPokemonInfo(pid = pid)
+        pokemonDetailViewModel.getPokemonInfo(pid = pid)
+        pokemonDetailViewModel.loadLocalInfo(pid = pid)
     }
 
-    Box {
+    val error = localInfo.error ?: remoteInfo.error ?: descriptionInfo.error
+    if (error != null) {
+        ErrorView(
+            message = error.message ?: "데이터를 불러오지 못했어요",
+            onRetry = {
+                pokemonDetailViewModel.getPokemonInfo(pid = pid)
+                pokemonDetailViewModel.loadLocalInfo(pid = pid)
+            },
+        )
+        return
+    }
+
+    if (localInfo.isLoading || remoteInfo.isLoading || descriptionInfo.isLoading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator()
+        }
+        return
+    }
+
+    val local = localInfo.data ?: return
+    val remote = remoteInfo.data ?: return
+
+    val isDarkMode = isSystemInDarkTheme()
+    val bgColor = if (isDarkMode) Color(local.nightTimeColor) else Color(local.dayTimeColor)
+
+    Box(modifier = Modifier.fillMaxSize()) {
         CollapsedAppBar(
             modifier = modifier.zIndex(2f),
             boxModifier = modifier
                 .zIndex(2f)
                 .fillMaxWidth()
                 .height(COLLAPSED_TOP_BAR_HEIGHT)
-                .background(color = Color.White),
+                .background(color = bgColor),
             onClickBack = onClickBack,
             isCollapsed = isCollapsed,
-            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pid}.png",
-            typeImageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/18.png",
-            name = "이름"
+            imageUrl = remote.appBarIconUrl,
+            typeImageUrl = remote.typeImgUrl,
+            name = local.koName,
         )
         LazyColumn(
             modifier = modifier.padding(top = COLLAPSED_TOP_BAR_HEIGHT),
@@ -74,19 +114,41 @@ fun PokemonDetailScreen(
                         .fillMaxWidth()
                         .height(EXPANDED_TOP_BAR_HEIGHT - COLLAPSED_TOP_BAR_HEIGHT)
                         .background(
-                            color = Color.White,
+                            color = bgColor,
                             shape = RoundedCornerShape(0.dp, 0.dp, 16.dp, 16.dp)
                         ),
-                    imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pid}.png",
-                    koName = "이름",
-                    engName = "name"
+                    imageUrl = remote.imgUrl,
+                    koName = local.koName,
+                    engName = local.engName,
                 )
             }
             item {
-                Spacer(Modifier.height(16.dp))
-                Text("상세 내용 id=$pid", Modifier.padding(horizontal = 16.dp))
-                Spacer(Modifier.height(1200.dp)) // 테스트용
+                PokemonDetailContent(
+                    modifier = modifier,
+                    isDarkMode = isDarkMode,
+                    remoteInfo = remoteInfo,
+                    descriptionInfo = descriptionInfo,
+                )
             }
+        }
+    }
+}
+
+@Composable
+private fun ErrorView(
+    message: String,
+    onRetry: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(text = message)
+        Button(onClick = onRetry, modifier = Modifier.padding(top = 16.dp)) {
+            Text(text = "다시 시도")
         }
     }
 }

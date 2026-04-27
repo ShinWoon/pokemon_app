@@ -1,13 +1,9 @@
 package brandy.newcld.pokemon.ui.nav
 
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.core.EaseIn
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -24,23 +20,37 @@ fun AppNavHost(
     startDestination: String,
     onClickBack: () -> Unit,
 ) {
+    val slideSpec = tween<IntOffset>(durationMillis = 300)
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
-        enterTransition = { EnterTransition.None },
-        exitTransition = { ExitTransition.None }
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = slideSpec,
+            )
+        },
+        exitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = slideSpec,
+            )
+        },
+        popEnterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = slideSpec,
+            )
+        },
+        popExitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = slideSpec,
+            )
+        },
     ) {
-        composable(
-            route = "pokemon_list",
-            enterTransition = {
-                fadeIn(
-                    animationSpec = tween(300, easing = LinearEasing)
-                ) + slideIntoContainer(
-                    animationSpec = tween(300, easing = EaseIn),
-                    towards = AnimatedContentTransitionScope.SlideDirection.End
-                )
-            }
-        ) {
+        composable(route = "pokemon_list") {
             PokemonListScreen(
                 pokemonListViewModel = hiltViewModel(),
                 onItemClick = { pid -> navController.navigate("pokemon_detail/${pid}") },
@@ -48,15 +58,7 @@ fun AppNavHost(
         }
         composable(
             route = "pokemon_detail/{pid}",
-            arguments = listOf(navArgument("pid"){ type = NavType.IntType }),
-            enterTransition = {
-                fadeIn(
-                    animationSpec = tween(300, easing = LinearEasing)
-                ) + slideIntoContainer(
-                    animationSpec = tween(300, easing = EaseIn),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start
-                )
-            }
+            arguments = listOf(navArgument("pid") { type = NavType.IntType }),
         ) { backStackEntry ->
             val pid = backStackEntry.arguments?.getInt("pid")
 

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -86,9 +87,18 @@ fun CollapsedAppBar (
             AsyncImage(
                 model = typeImageUrl,
                 contentDescription = null,
-                modifier = modifier.size(64.dp).padding(end = 16.dp),
+                modifier = modifier.width(72.dp).padding(end = 16.dp),
                 contentScale = ContentScale.Fit,
             )
+            IconButton(
+                onClick = {},
+                modifier = modifier.size(16.dp)
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.music_note_round),
+                    contentDescription = "울음소리 버튼"
+                )
+            }
         }
     }
 }

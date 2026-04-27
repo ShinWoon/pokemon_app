@@ -7,6 +7,7 @@ import brandy.newcld.pokemon.presentation.model.PokemonDetailLocalInfoModel
 import brandy.newcld.pokemon.presentation.model.PokemonInfoModel
 import brandy.newcld.pokemon.presentation.model.UiState
 import brandy.newcld.pokemon.presentation.model.toPokemonDetailLocalInfoModel
+import brandy.newcld.pokemon.presentation.model.toPresentationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
@@ -17,26 +18,23 @@ class PokemonDetailViewModel @Inject constructor(
     private val getPokemonDetailLocalInfoUseCase: GetPokemonDetailLocalInfoUseCase,
     private val getPokemonSpeciesUseCase: GetPokemonSpeciesUseCase
 ): BaseViewModel() {
-    private val _localAppBarInfoUiState = MutableStateFlow<UiState<PokemonDetailLocalInfoModel>>(UiState())
+    private val _localAppBarInfoUiState = MutableStateFlow(UiState<PokemonDetailLocalInfoModel>(isLoading = true))
     val localAppBarInfoUiState = _localAppBarInfoUiState
 
-    private val _remotePokemonInfoUiState = MutableStateFlow<UiState<PokemonInfoModel>>(UiState())
+    private val _remotePokemonInfoUiState = MutableStateFlow(UiState<PokemonInfoModel>(isLoading = true))
     val remotePokemonInfoUiState = _remotePokemonInfoUiState
+
+    private val _descriptionUiState = MutableStateFlow(UiState<String>(isLoading = true))
+    val descriptionUiState = _descriptionUiState
 
     fun getPokemonInfo(pid: Int?) {
         val id = pid ?: 1
-        combineDataResource(
-            fa = getPokemonDetailUseCase(id = id),
-            fb = getPokemonSpeciesUseCase(id = id)
-        ) { info, description ->
-            PokemonInfoModel(
-                height = info.height,
-                weight = info.weight,
-                types = info.types.joinToString(", ") { it.type.name },
-                description = description
-            )
-        }.bind(
+        getPokemonDetailUseCase(id = id).bind(
             state = _remotePokemonInfoUiState,
+            mapper = { it.toPresentationModel() }
+        )
+        getPokemonSpeciesUseCase(id = id).bind(
+            state = _descriptionUiState,
             mapper = { it }
         )
     }

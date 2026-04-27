@@ -25,7 +25,7 @@ abstract class BaseViewModel: ViewModel() {
         this.onEach { res ->
             state.update { current ->
                 when(res) {
-                    is DataResource.Loading -> current.copy(isLoading = true)
+                    is DataResource.Loading -> current.copy(isLoading = true, error = null)
                     is DataResource.Success -> current.copy(
                         isLoading = false,
                         data = mapper(res.data),
@@ -48,7 +48,7 @@ abstract class BaseViewModel: ViewModel() {
         this.onEach { res ->
             state.update { current ->
                 when(res) {
-                    is DataResource.Loading -> current.copy(isLoading = true)
+                    is DataResource.Loading -> current.copy(isLoading = true, error = null)
                     is DataResource.Success -> current.copy(
                         isLoading = false,
                         items = res.data.map(mapper),
