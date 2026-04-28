@@ -90,15 +90,6 @@ fun CollapsedAppBar (
                 modifier = modifier.width(72.dp).padding(end = 16.dp),
                 contentScale = ContentScale.Fit,
             )
-            IconButton(
-                onClick = {},
-                modifier = modifier.size(16.dp)
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.music_note_round),
-                    contentDescription = "울음소리 버튼"
-                )
-            }
         }
     }
 }
