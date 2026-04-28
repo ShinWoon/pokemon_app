@@ -13,6 +13,7 @@ kotlinxCoroutinesCore = "1.9.0"
 lifecycleRuntimeKtx = "2.8.4"
 appcompat = "1.7.1"
 lifecycleViewmodelKtx = "2.4.0"
+lottieCompose = "6.4.0"
 material = "1.13.0"
 jetbrainsKotlinJvm = "1.9.24"
 javaxInject = "1"
@@ -43,6 +44,7 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 #UI
@@ -56,6 +58,7 @@ ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilCompose" }
+coil-gif = { module = "io.coil-kt.coil3:coil-gif", version.ref = "coilCompose" }
 androidx-palette = { module = "androidx.palette:palette", version.ref = "palette" }
 
 # Network
