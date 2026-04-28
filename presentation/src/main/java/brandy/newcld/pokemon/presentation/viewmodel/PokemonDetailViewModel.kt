@@ -8,6 +8,7 @@ import brandy.newcld.pokemon.presentation.model.PokemonInfoModel
 import brandy.newcld.pokemon.presentation.model.UiState
 import brandy.newcld.pokemon.presentation.model.toPokemonDetailLocalInfoModel
 import brandy.newcld.pokemon.presentation.model.toPresentationModel
+import brandy.newcld.pokemon.presentation.util.SoundPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
@@ -16,7 +17,8 @@ import javax.inject.Inject
 class PokemonDetailViewModel @Inject constructor(
     private val getPokemonDetailUseCase: GetPokemonInfoUseCase,
     private val getPokemonDetailLocalInfoUseCase: GetPokemonDetailLocalInfoUseCase,
-    private val getPokemonSpeciesUseCase: GetPokemonSpeciesUseCase
+    private val getPokemonSpeciesUseCase: GetPokemonSpeciesUseCase,
+    private val soundPlayer: SoundPlayer,
 ): BaseViewModel() {
     private val _localAppBarInfoUiState = MutableStateFlow(UiState<PokemonDetailLocalInfoModel>(isLoading = true))
     val localAppBarInfoUiState = _localAppBarInfoUiState
@@ -44,5 +46,15 @@ class PokemonDetailViewModel @Inject constructor(
             state = _localAppBarInfoUiState,
             mapper = { it.toPokemonDetailLocalInfoModel() }
         )
+    }
+
+    fun playCry(url: String) {
+        if (url.isBlank()) return
+        soundPlayer.play(url)
+    }
+
+    override fun onCleared() {
+        soundPlayer.release()
+        super.onCleared()
     }
 }

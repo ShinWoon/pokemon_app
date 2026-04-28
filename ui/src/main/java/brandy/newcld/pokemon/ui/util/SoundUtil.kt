@@ -1,24 +1,37 @@
 package brandy.newcld.pokemon.ui.util
 
-import android.content.Context
-import androidx.media3.common.MediaItem
-import androidx.media3.exoplayer.ExoPlayer
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import brandy.newcld.pokemon.presentation.util.SoundPlayer
 
-class AppSoundPlayer(context: Context): SoundPlayer {
-    private val player = ExoPlayer.Builder(context).build()
+class AppSoundPlayer : SoundPlayer {
+    private var player: MediaPlayer? = null
+
     override fun play(url: String) {
-        player.setMediaItem(MediaItem.fromUri(url))
-        player.prepare()
-        player.play()
+        player?.reset() ?: run { player = MediaPlayer() }
+        player?.apply {
+            setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build()
+            )
+            setOnPreparedListener { it.start() }
+            setOnErrorListener { _, _, _ ->
+                reset()
+                true
+            }
+            setDataSource(url)
+            prepareAsync()
+        }
     }
 
     override fun stop() {
-        player.stop()
+        player?.reset()
     }
 
-    fun release() {
-        player.release()
+    override fun release() {
+        player?.release()
+        player = null
     }
-
 }

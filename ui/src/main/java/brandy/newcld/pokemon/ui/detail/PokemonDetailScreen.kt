@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +28,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import brandy.newcld.pokemon.presentation.viewmodel.PokemonDetailViewModel
+import brandy.newcld.pokemon.ui.state.LoadingScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,12 +75,7 @@ fun PokemonDetailScreen(
     }
 
     if (localInfo.isLoading || remoteInfo.isLoading || descriptionInfo.isLoading) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
-        ) {
-            CircularProgressIndicator()
-        }
+        LoadingScreen()
         return
     }
 
@@ -128,6 +123,7 @@ fun PokemonDetailScreen(
                     isDarkMode = isDarkMode,
                     remoteInfo = remoteInfo,
                     descriptionInfo = descriptionInfo,
+                    onPlayCry = pokemonDetailViewModel::playCry,
                 )
             }
         }

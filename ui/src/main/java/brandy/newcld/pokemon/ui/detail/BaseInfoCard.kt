@@ -60,8 +60,3 @@ fun BasicInfoItem(modifier: Modifier = Modifier, label: String, num: String, uni
         }
     }
 }
-
-@Composable
-fun VerticalDivider(modifier: Modifier = Modifier) {
-    Box(modifier = modifier.width(1.dp).height(40.dp).background(Color(0xFFE0E0E0)))
-}

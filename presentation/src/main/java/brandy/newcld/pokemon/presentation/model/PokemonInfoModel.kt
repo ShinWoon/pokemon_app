@@ -13,6 +13,8 @@ data class PokemonInfoModel(
     val imgUrl: String = "",
     val appBarIconUrl: String = "",
     val typeImgUrl: String = "",
+    val cryLatestUrl: String = "",
+    val cryLegacyUrl: String = "",
 )
 
 data class StatModel(
@@ -36,4 +38,6 @@ fun PokemonInfo.toPresentationModel(): PokemonInfoModel = PokemonInfoModel(
     imgUrl = sprites.other.officialArtwork.frontDefault,
     appBarIconUrl = sprites.frontDefault,
     typeImgUrl = types.firstOrNull()?.imgUrl ?: "",
+    cryLatestUrl = cries.latest,
+    cryLegacyUrl = cries.legacy,
 )

@@ -11,7 +11,8 @@ fun PokemonDetailContent(
     modifier: Modifier = Modifier,
     isDarkMode: Boolean = false,
     remoteInfo: UiState<PokemonInfoModel>,
-    descriptionInfo: UiState<String>
+    descriptionInfo: UiState<String>,
+    onPlayCry: (String) -> Unit = {},
 ) {
     Column {
         // 설명 카드
@@ -30,6 +31,6 @@ fun PokemonDetailContent(
 
 
         // 소리 카드
-
+        CryCard(modifier = modifier, isDarkMode = isDarkMode, remoteInfo = remoteInfo, onPlay = onPlayCry)
     }
 }
