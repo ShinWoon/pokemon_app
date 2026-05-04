@@ -13,15 +13,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import brandy.newcld.pokemon.ui.theme.DarkModeCardBackground
 import brandy.newcld.pokemon.ui.theme.LightModeCardBackground
+import brandy.newcld.pokemon.ui.theme.PrimaryText
+import brandy.newcld.pokemon.ui.theme.Typography
 
 @Composable
 fun DetailCommonCard(
     modifier: Modifier = Modifier,
     isDarkMode: Boolean = false,
     title: String = "",
+    titleColor: Color = PrimaryText,
     content: @Composable () -> Unit
 ) {
     Card(
@@ -34,7 +39,13 @@ fun DetailCommonCard(
     ) {
         Column {
             if(title != "") {
-                Text(text = title, modifier = modifier.padding(start = 16.dp, top = 12.dp, bottom = 6.dp))
+                Text(
+                    text = title,
+                    color = titleColor,
+                    fontSize = 14.sp,
+                    style = Typography.titleLarge,
+                    modifier = modifier.padding(start = 16.dp, top = 12.dp, bottom = 6.dp),
+                )
             }
             content()
         }

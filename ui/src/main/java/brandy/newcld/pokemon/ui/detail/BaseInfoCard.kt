@@ -24,17 +24,22 @@ import androidx.compose.ui.unit.sp
 import brandy.newcld.pokemon.presentation.model.PokemonInfoModel
 import brandy.newcld.pokemon.presentation.model.UiState
 import brandy.newcld.pokemon.ui.R
+import brandy.newcld.pokemon.ui.theme.PrimaryText
+import brandy.newcld.pokemon.ui.theme.SecondaryText
+import brandy.newcld.pokemon.ui.theme.Typography
 
 @Composable
 fun BaseInfoCard(
     modifier: Modifier = Modifier,
     isDarkMode: Boolean = false,
     remoteInfo: UiState<PokemonInfoModel>,
+    typeColors: PokemonTypeColor,
 ) {
     DetailCommonCard (
         modifier = modifier,
         isDarkMode = isDarkMode,
-        title = "기본 정보"
+        title = "기본 정보",
+        titleColor = typeColors.textColor,
     ) {
         Row(
             modifier = modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 12.dp),
@@ -52,11 +57,11 @@ fun BaseInfoCard(
 @Composable
 fun BasicInfoItem(modifier: Modifier = Modifier, label: String, num: String, unit: String, icon: Int, contentDesc: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = "$num $unit", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color(0xFF333333))
+        Text(text = "$num $unit", fontSize = 16.sp, style = Typography.titleMedium, color = PrimaryText)
         Spacer(modifier = modifier.height(4.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(painter = painterResource(icon), contentDescription = contentDesc, tint = Color(0xFF757575), modifier = modifier.size(16.dp).padding(end = 4.dp))
-            Text(text = label, fontSize = 12.sp, color = Color(0xFF757575))
+            Icon(painter = painterResource(icon), contentDescription = contentDesc, tint = SecondaryText, modifier = modifier.size(16.dp).padding(end = 4.dp))
+            Text(text = label, fontSize = 12.sp, style = Typography.titleSmall, color = SecondaryText)
         }
     }
 }

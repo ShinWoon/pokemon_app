@@ -1,8 +1,11 @@
 package brandy.newcld.pokemon.ui.detail
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import brandy.newcld.pokemon.presentation.model.PokemonInfoModel
 import brandy.newcld.pokemon.presentation.model.UiState
 
@@ -14,23 +17,27 @@ fun PokemonDetailContent(
     descriptionInfo: UiState<String>,
     onPlayCry: (String) -> Unit = {},
 ) {
-    Column {
+    val typeName = remoteInfo.data?.type.orEmpty()
+    val typeColors = remember(typeName, isDarkMode) {
+        PokemonTypeColors.getColor(pokemonTypeOf(typeName), isDarkMode)
+    }
+
+    Column(
+        modifier = modifier.padding(bottom = 8.dp)
+    ) {
         // 설명 카드
         DescriptionCard(modifier = modifier, isDarkMode = isDarkMode, descriptionText = descriptionInfo.data ?: "설명 없음")
 
         // 키 몸무게 경험치
-        BaseInfoCard(modifier = modifier, isDarkMode = isDarkMode, remoteInfo = remoteInfo)
+        BaseInfoCard(modifier = modifier, isDarkMode = isDarkMode, remoteInfo = remoteInfo, typeColors = typeColors)
 
         // 스탯 정보 카드
-        StatInfoCard(modifier = modifier, isDarkMode = isDarkMode, remoteInfo = remoteInfo)
+        StatInfoCard(modifier = modifier, isDarkMode = isDarkMode, remoteInfo = remoteInfo, typeColors = typeColors)
 
         // 특성 카드
-//        AbilityInfoCard(modifier = modifier, isDarkMode = isDarkMode, remoteInfo = remoteInfo)
-
-        // 기술 카드
-
+        AbilityInfoCard(modifier = modifier, isDarkMode = isDarkMode, remoteInfo = remoteInfo, typeColors = typeColors)
 
         // 소리 카드
-        CryCard(modifier = modifier, isDarkMode = isDarkMode, remoteInfo = remoteInfo, onPlay = onPlayCry)
+        CryCard(modifier = modifier, isDarkMode = isDarkMode, remoteInfo = remoteInfo, onPlay = onPlayCry, typeColors = typeColors)
     }
 }

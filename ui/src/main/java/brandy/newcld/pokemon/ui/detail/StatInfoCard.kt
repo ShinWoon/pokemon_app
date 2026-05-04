@@ -17,24 +17,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import brandy.newcld.pokemon.presentation.model.PokemonInfoModel
 import brandy.newcld.pokemon.presentation.model.UiState
 import brandy.newcld.pokemon.ui.theme.MediumGray
+import brandy.newcld.pokemon.ui.theme.PrimaryText
+import brandy.newcld.pokemon.ui.theme.SecondaryText
+import brandy.newcld.pokemon.ui.theme.Typography
 
 @Composable
 fun StatInfoCard(
     modifier: Modifier = Modifier,
     isDarkMode: Boolean = false,
     remoteInfo: UiState<PokemonInfoModel>,
+    typeColors: PokemonTypeColor,
 ) {
     val stats = remoteInfo.data?.stats ?: return
     DetailCommonCard (
         modifier = modifier,
         isDarkMode = isDarkMode,
-        title = "스탯 정보"
+        title = "스탯 정보",
+        titleColor = typeColors.textColor,
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -64,15 +68,15 @@ fun TextStatRow(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.fillMaxWidth()
     ) {
-        Text(text = txt)
+        Text(text = txt, fontSize = 14.sp, style = Typography.titleMedium, color = PrimaryText)
 
         Spacer(modifier = modifier.weight(1f))
 
         Text(
             text = num.toString().padStart(3),
             fontSize = 13.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = Color(0xFF333333),
+            style = Typography.titleMedium,
+            color = SecondaryText,
             modifier = Modifier.width(32.dp)
         )
         Spacer(modifier.width(8.dp))
