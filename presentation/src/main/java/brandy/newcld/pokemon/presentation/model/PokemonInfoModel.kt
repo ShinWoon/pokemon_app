@@ -5,7 +5,7 @@ import brandy.newcld.pokemon.domain.model.PokemonInfo
 data class PokemonInfoModel(
     val height: Int = 0,
     val weight: Int = 0,
-    val types: String = "",
+    val type: String = "",
     val baseExperience: Int = 0,
     val stats: List<StatModel> = emptyList(),
     val abilities: List<AbilityModel> = emptyList(),
@@ -30,7 +30,7 @@ data class AbilityModel(
 fun PokemonInfo.toPresentationModel(): PokemonInfoModel = PokemonInfoModel(
     height = height,
     weight = weight,
-    types = types.joinToString(", ") { it.type.name },
+    type = types.firstOrNull()?.type?.name.orEmpty(),
     baseExperience = baseExperience,
     stats = stats.map { StatModel(it.stat.name, it.baseStat) },
     abilities = abilities.map { AbilityModel(it.ability.name, it.isHidden) },

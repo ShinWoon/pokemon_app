@@ -6,5 +6,6 @@ object RoomConstant {
 
     object Table {
         const val POKEMON = "pokemon"
+        const val ABILITY = "ability"
     }
 }
