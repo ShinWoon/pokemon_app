@@ -11,7 +11,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import brandy.newcld.pokemon.ui.R
+import brandy.newcld.pokemon.ui.theme.PrimaryText
+import brandy.newcld.pokemon.ui.theme.Typography
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -41,6 +44,6 @@ fun LoadingScreen(
             modifier = modifier.size(160.dp)
         )
         Spacer(modifier = modifier.size(8.dp))
-        Text(text = "로딩 중")
+        Text(text = "로딩 중", style = Typography.titleLarge, color = PrimaryText, fontSize = 16.sp)
     }
 }
