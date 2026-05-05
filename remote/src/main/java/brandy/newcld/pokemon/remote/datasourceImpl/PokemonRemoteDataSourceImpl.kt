@@ -2,6 +2,7 @@ package brandy.newcld.pokemon.remote.datasourceImpl
 
 import android.util.Log
 import brandy.newcld.pokemon.data.model.AbilityEntity
+import brandy.newcld.pokemon.data.model.EvolutionChainEntity
 import brandy.newcld.pokemon.data.model.NameUrlEntity
 import brandy.newcld.pokemon.data.model.PokemonInfoEntity
 import brandy.newcld.pokemon.data.remote.PokemonRemoteDataSource
@@ -26,6 +27,14 @@ class PokemonRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getPokemonSpecies(id: Int): String {
         return apiService.getPokemonSpecies(id = id).getKoreanDescription()
+    }
+
+    override suspend fun getEvolutionChainIdForPokemon(pokemonId: Int): Int? {
+        return apiService.getPokemonSpecies(id = pokemonId).getEvolutionChainId()
+    }
+
+    override suspend fun getEvolutionChain(chainId: Int): EvolutionChainEntity {
+        return apiService.getEvolutionChain(id = chainId).toData()
     }
 
     override suspend fun getAbility(name: String): AbilityEntity {

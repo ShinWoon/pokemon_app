@@ -2,11 +2,21 @@ package brandy.newcld.pokemon.local.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import brandy.newcld.pokemon.local.model.AbilityCacheDto
+import brandy.newcld.pokemon.local.model.EvolutionChainCacheDto
 import brandy.newcld.pokemon.local.model.PokemonDetailLocalInfoEntity
 import brandy.newcld.pokemon.local.room.RoomConstant.ROOM_DB_VERSION
 
-@Database(entities = [PokemonDetailLocalInfoEntity::class], version = ROOM_DB_VERSION)
-
+@Database(
+    entities = [
+        PokemonDetailLocalInfoEntity::class,
+        AbilityCacheDto::class,
+        EvolutionChainCacheDto::class,
+    ],
+    version = ROOM_DB_VERSION,
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun pokemonDao(): PokemonDao
+    abstract fun abilityDao(): AbilityDao
+    abstract fun evolutionChainDao(): EvolutionChainDao
 }

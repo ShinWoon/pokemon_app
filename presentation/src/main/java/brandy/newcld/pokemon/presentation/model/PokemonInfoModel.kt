@@ -24,6 +24,7 @@ data class StatModel(
 
 data class AbilityModel(
     val name: String,
+    val koName: String? = null,
     val isHidden: Boolean,
 )
 
@@ -33,7 +34,7 @@ fun PokemonInfo.toPresentationModel(): PokemonInfoModel = PokemonInfoModel(
     type = types.firstOrNull()?.type?.name.orEmpty(),
     baseExperience = baseExperience,
     stats = stats.map { StatModel(it.stat.name, it.baseStat) },
-    abilities = abilities.map { AbilityModel(it.ability.name, it.isHidden) },
+    abilities = abilities.map { AbilityModel(name = it.ability.name, isHidden = it.isHidden) },
     moves = moves.map { it.move.name },
     imgUrl = sprites.other.officialArtwork.frontDefault,
     appBarIconUrl = sprites.frontDefault,

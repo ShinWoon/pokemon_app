@@ -45,8 +45,12 @@ fun AbilityInfoCard(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            abilities?.forEach { (name, isHidden) ->
-                AbilityChip(name = name, isHidden = isHidden, typeColors = typeColors)
+            abilities?.forEach { ability ->
+                AbilityChip(
+                    name = ability.koName ?: ability.name,
+                    isHidden = ability.isHidden,
+                    typeColors = typeColors,
+                )
             }
         }
     }

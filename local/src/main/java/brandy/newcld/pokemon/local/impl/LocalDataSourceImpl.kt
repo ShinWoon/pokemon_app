@@ -5,8 +5,14 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import brandy.newcld.pokemon.data.local.PokemonLocalDataSource
+import brandy.newcld.pokemon.data.model.AbilityEntity
+import brandy.newcld.pokemon.data.model.EvolutionChainEntity
 import brandy.newcld.pokemon.data.model.PokemonDetailLocalInfoEntity
 import brandy.newcld.pokemon.data.model.PokemonListItemLocalEntity
+import brandy.newcld.pokemon.local.model.AbilityCacheDto
+import brandy.newcld.pokemon.local.model.EvolutionChainCacheDto
+import brandy.newcld.pokemon.local.room.AbilityDao
+import brandy.newcld.pokemon.local.room.EvolutionChainDao
 import brandy.newcld.pokemon.local.room.PokemonDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -14,6 +20,8 @@ import javax.inject.Inject
 
 class LocalDataSourceImpl @Inject constructor(
     private val pokemonDao: PokemonDao,
+    private val abilityDao: AbilityDao,
+    private val evolutionChainDao: EvolutionChainDao,
 ) : PokemonLocalDataSource {
     override suspend fun getPokemonDetailLocalInfo(pid: Int): PokemonDetailLocalInfoEntity =
         pokemonDao.getAll(pid = pid).toData()
@@ -31,4 +39,23 @@ class LocalDataSourceImpl @Inject constructor(
     ) {
         pokemonDao.updateColor(pid = pid, dayTimeColor = dayTimeColor, nightTimeColor = nightTimeColor)
     }
+
+    override suspend fun getAbility(name: String): AbilityEntity? =
+        abilityDao.getByName(name)?.toEntity()
+
+    override suspend fun saveAbility(entity: AbilityEntity) {
+        abilityDao.insert(
+            AbilityCacheDto(name = entity.engName, koName = entity.koName)
+        )
+    }
+
+    override suspend fun getEvolutionChain(chainId: Int): EvolutionChainEntity? =
+        evolutionChainDao.getById(chainId)?.toEntity()
+
+    override suspend fun saveEvolutionChain(entity: EvolutionChainEntity) {
+        evolutionChainDao.insert(EvolutionChainCacheDto.fromEntity(entity))
+    }
+
+    override suspend fun getKoNameByPokemonId(pid: Int): String? =
+        pokemonDao.getKoName(pid)?.takeIf { it.isNotBlank() }
 }

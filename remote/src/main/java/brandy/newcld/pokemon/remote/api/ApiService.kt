@@ -1,6 +1,7 @@
 package brandy.newcld.pokemon.remote.api
 
 import brandy.newcld.pokemon.remote.model.AbilityResponse
+import brandy.newcld.pokemon.remote.model.EvolutionChainResponse
 import brandy.newcld.pokemon.remote.model.PokemonInfoResponse
 import brandy.newcld.pokemon.remote.model.PokemonResponse
 import brandy.newcld.pokemon.remote.model.PokemonSpeciesResponse
@@ -33,5 +34,11 @@ interface ApiService {
     suspend fun getAbility(
         @Path("name") name: String
     ): AbilityResponse
+
+    /* 포켓몬 진화 체인 호출 */
+    @GET("evolution-chain/{id}")
+    suspend fun getEvolutionChain(
+        @Path("id") id: Int
+    ): EvolutionChainResponse
 
 }

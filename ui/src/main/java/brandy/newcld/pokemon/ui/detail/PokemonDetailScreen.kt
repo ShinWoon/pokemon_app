@@ -56,13 +56,14 @@ fun PokemonDetailScreen(
     val localInfo by pokemonDetailViewModel.localAppBarInfoUiState.collectAsState()
     val remoteInfo by pokemonDetailViewModel.remotePokemonInfoUiState.collectAsState()
     val descriptionInfo by pokemonDetailViewModel.descriptionUiState.collectAsState()
+    val evolutionChainInfo by pokemonDetailViewModel.evolutionChainUiState.collectAsState()
 
     LaunchedEffect(Unit) {
         pokemonDetailViewModel.getPokemonInfo(pid = pid)
         pokemonDetailViewModel.loadLocalInfo(pid = pid)
     }
 
-    val error = localInfo.error ?: remoteInfo.error ?: descriptionInfo.error
+    val error = localInfo.error ?: remoteInfo.error ?: descriptionInfo.error ?: evolutionChainInfo.error
     if (error != null) {
         ErrorView(
             message = error.message ?: "데이터를 불러오지 못했어요",
@@ -74,7 +75,7 @@ fun PokemonDetailScreen(
         return
     }
 
-    if (localInfo.isLoading || remoteInfo.isLoading || descriptionInfo.isLoading) {
+    if (localInfo.isLoading || remoteInfo.isLoading || descriptionInfo.isLoading || evolutionChainInfo.isLoading) {
         LoadingScreen()
         return
     }
@@ -123,6 +124,7 @@ fun PokemonDetailScreen(
                     isDarkMode = isDarkMode,
                     remoteInfo = remoteInfo,
                     descriptionInfo = descriptionInfo,
+                    evolutionChainInfo = evolutionChainInfo,
                     onPlayCry = pokemonDetailViewModel::playCry,
                 )
             }

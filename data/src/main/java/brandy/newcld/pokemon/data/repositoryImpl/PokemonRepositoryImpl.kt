@@ -9,7 +9,10 @@ import brandy.newcld.pokemon.data.remote.PokemonListPagingSource
 import brandy.newcld.pokemon.data.remote.PokemonRemoteDataSource
 import brandy.newcld.pokemon.data.toDomainModel
 import brandy.newcld.pokemon.data.toDomainPaging
+import brandy.newcld.pokemon.data.model.EvolutionChainEntity
 import brandy.newcld.pokemon.dataresource.DataResource
+import brandy.newcld.pokemon.domain.model.Ability
+import brandy.newcld.pokemon.domain.model.EvolutionChain
 import brandy.newcld.pokemon.domain.model.NameUrl
 import brandy.newcld.pokemon.domain.model.PokemonDetailLocalInfoItem
 import brandy.newcld.pokemon.domain.model.PokemonInfo
@@ -50,6 +53,32 @@ class PokemonRepositoryImpl @Inject constructor(
     override fun getPokemonSpecies(id: Int): Flow<DataResource<String>> = flowDataResource {
         remoteDataSource.getPokemonSpecies(id)
     }
+
+    override fun getAbility(name: String): Flow<DataResource<Ability>> = flowDataResource {
+        localDataSource.getAbility(name) ?: remoteDataSource.getAbility(name).also {
+            localDataSource.saveAbility(it)
+        }
+    }
+
+    override fun getEvolutionChain(pokemonId: Int): Flow<DataResource<EvolutionChain>> = flowDataResource {
+        val chainId = remoteDataSource.getEvolutionChainIdForPokemon(pokemonId)
+            ?: throw IllegalStateException("Evolution chain id not found for pokemon $pokemonId")
+        localDataSource.getEvolutionChain(chainId) ?: run {
+            val remote = remoteDataSource.getEvolutionChain(chainId)
+            val enriched = enrichWithKoNames(remote)
+            localDataSource.saveEvolutionChain(enriched)
+            enriched
+        }
+    }
+
+    private suspend fun enrichWithKoNames(chain: EvolutionChainEntity): EvolutionChainEntity =
+        chain.copy(
+            stages = chain.stages.map { stage ->
+                stage.copy(
+                    koName = localDataSource.getKoNameByPokemonId(stage.speciesId) ?: stage.engName
+                )
+            }
+        )
 
     companion object {
         val PAGESIZE = 300
