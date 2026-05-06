@@ -34,7 +34,7 @@ fun PokemonDetailContent(
         BaseInfoCard(modifier = modifier, isDarkMode = isDarkMode, remoteInfo = remoteInfo, typeColors = typeColors)
 
         // 진화 카드
-        EvolutionChainCard(modifier = modifier, isDarkMode = isDarkMode, evolutionChainInfo = evolutionChainInfo, typeColors = typeColors)
+        EvolutionChainCard(isDarkMode = isDarkMode, evolutionChainInfo = evolutionChainInfo, typeColors = typeColors)
 
         // 스탯 정보 카드
         StatInfoCard(modifier = modifier, isDarkMode = isDarkMode, remoteInfo = remoteInfo, typeColors = typeColors)

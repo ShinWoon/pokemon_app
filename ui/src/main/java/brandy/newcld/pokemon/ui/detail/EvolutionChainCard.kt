@@ -2,6 +2,7 @@ package brandy.newcld.pokemon.ui.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -53,56 +54,64 @@ fun EvolutionChainCard(
         title = "진화",
         titleColor = typeColors.textColor,
     ) {
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(scrollState)
-                    .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                stages.forEachIndexed { index, stage ->
-                    if (index > 0) {
-                        Text(
-                            text = "▶",
-                            fontSize = 14.sp,
-                            color = SecondaryText,
-                            modifier = Modifier.padding(horizontal = 4.dp),
-                        )
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(scrollState)
+                        .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    stages.forEachIndexed { index, stage ->
+                        if (index > 0) {
+                            Text(
+                                text = "▶",
+                                fontSize = 14.sp,
+                                color = SecondaryText,
+                                modifier = Modifier.padding(horizontal = 4.dp),
+                            )
+                        }
+                        EvolutionStageView(stage = stage)
                     }
-                    EvolutionStageView(stage = stage)
+                }
+
+                if (scrollState.canScrollBackward) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .fillMaxHeight()
+                            .width(EDGE_FADE_WIDTH)
+                            .background(
+                                Brush.horizontalGradient(listOf(cardBg, Color.Transparent))
+                            ),
+                    )
+                }
+                if (scrollState.canScrollForward) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .fillMaxHeight()
+                            .width(EDGE_FADE_WIDTH)
+                            .background(
+                                Brush.horizontalGradient(listOf(Color.Transparent, cardBg))
+                            ),
+                    )
                 }
             }
-
-            if (scrollState.canScrollBackward) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.CenterStart)
-                        .fillMaxHeight()
-                        .width(EDGE_FADE_WIDTH)
-                        .background(
-                            Brush.horizontalGradient(listOf(cardBg, Color.Transparent))
-                        ),
-                )
-            }
             if (scrollState.canScrollForward) {
-                Box(
+                Row(
                     modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .fillMaxHeight()
-                        .width(EDGE_FADE_WIDTH)
-                        .background(
-                            Brush.horizontalGradient(listOf(Color.Transparent, cardBg))
-                        ),
-                )
-                Text(
-                    text = "▶",
-                    fontSize = 12.sp,
-                    color = SecondaryText,
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .padding(end = 6.dp),
-                )
+                        .fillMaxWidth()
+                        .padding(end = 16.dp, bottom = 8.dp),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    Text(
+                        text = "이동 ▶",
+                        fontSize = 12.sp,
+                        color = SecondaryText,
+                    )
+                }
             }
         }
     }
