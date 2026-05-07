@@ -33,6 +33,7 @@ data class EvolutionChainCacheDto(
                     stage.speciesId.toString(),
                     stage.engName,
                     stage.koName,
+                    stage.depth.toString(),
                 ).joinToString(STAGE_FIELD_DELIMITER)
             }
 
@@ -40,11 +41,12 @@ data class EvolutionChainCacheDto(
             if (json.isBlank()) return emptyList()
             return json.split(STAGE_DELIMITER).mapNotNull { stage ->
                 val parts = stage.split(STAGE_FIELD_DELIMITER)
-                if (parts.size < 3) return@mapNotNull null
+                if (parts.size < 4) return@mapNotNull null
                 EvolutionStageEntity(
                     speciesId = parts[0].toIntOrNull() ?: return@mapNotNull null,
                     engName = parts[1],
                     koName = parts[2],
+                    depth = parts[3].toIntOrNull() ?: return@mapNotNull null,
                 )
             }
         }

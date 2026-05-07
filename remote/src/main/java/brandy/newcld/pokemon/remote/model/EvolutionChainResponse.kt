@@ -20,13 +20,14 @@ data class ChainLinkResponse(
     @SerializedName("species") val species: NameUrlResponse,
     @SerializedName("evolves_to") val evolvesTo: List<ChainLinkResponse>,
 ) {
-    fun collectStages(acc: MutableList<EvolutionStageEntity>) {
+    fun collectStages(acc: MutableList<EvolutionStageEntity>, depth: Int = 0) {
         acc += EvolutionStageEntity(
             speciesId = extractSpeciesId(species.url),
             engName = species.name,
             koName = "",
+            depth = depth,
         )
-        evolvesTo.forEach { it.collectStages(acc) }
+        evolvesTo.forEach { it.collectStages(acc, depth + 1) }
     }
 }
 

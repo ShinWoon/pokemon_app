@@ -2,7 +2,7 @@ package brandy.newcld.pokemon.local.room
 
 object RoomConstant {
     const val ROOM_DB_NAME = "pokemon"
-    const val ROOM_DB_VERSION = 3
+    const val ROOM_DB_VERSION = 4
 
     object Table {
         const val POKEMON = "pokemon"

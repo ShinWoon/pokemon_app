@@ -34,6 +34,12 @@ private val MIGRATION_2_3 = object : Migration(2, 3) {
     }
 }
 
+private val MIGRATION_3_4 = object : Migration(3, 4) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("DELETE FROM `${RoomConstant.Table.EVOLUTION_CHAIN}`")
+    }
+}
+
 @Module
 @InstallIn(SingletonComponent::class)
 internal object LocalRoomModule {
@@ -47,7 +53,7 @@ internal object LocalRoomModule {
             name = RoomConstant.ROOM_DB_NAME
         )
             .createFromAsset("pokemon.db")
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
             .build()
 
     @Provides

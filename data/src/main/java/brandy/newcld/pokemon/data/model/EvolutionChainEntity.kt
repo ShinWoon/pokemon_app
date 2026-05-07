@@ -18,10 +18,12 @@ data class EvolutionStageEntity(
     val speciesId: Int,
     val engName: String,
     val koName: String,
+    val depth: Int,
 ) : DataMapper<EvolutionStage> {
     override fun toDomain(): EvolutionStage = EvolutionStage(
         speciesId = speciesId,
         engName = engName,
         koName = koName,
+        depth = depth,
     )
 }

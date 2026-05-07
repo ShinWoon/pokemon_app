@@ -2,6 +2,7 @@ package brandy.newcld.pokemon.ui.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -45,8 +46,9 @@ fun EvolutionChainCard(
     val stages = evolutionChainInfo.data?.stages.orEmpty()
     if (stages.isEmpty()) return
 
-    val scrollState = rememberScrollState()
     val cardBg = if (isDarkMode) DarkModeCardBackground else LightModeCardBackground
+    val levels = stages.groupBy { it.depth }.toSortedMap().values.toList()
+    val isBranching = levels.any { it.size > 1 }
 
     DetailCommonCard(
         modifier = modifier,
@@ -54,54 +56,164 @@ fun EvolutionChainCard(
         title = "진화",
         titleColor = typeColors.textColor,
     ) {
-        Box(
+        if (isBranching) {
+            BranchingEvolutionView(
+                levels = levels,
+                cardBg = cardBg,
+                isDarkMode = isDarkMode,
+            )
+        } else {
+            LinearEvolutionRow(
+                stages = stages.sortedBy { it.depth },
+                cardBg = cardBg,
+                isDarkMode = isDarkMode,
+            )
+        }
+    }
+}
+
+@Composable
+private fun LinearEvolutionRow(
+    stages: List<EvolutionStageModel>,
+    cardBg: Color,
+    isDarkMode: Boolean,
+) {
+    val scrollState = rememberScrollState()
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min),
+    ) {
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(IntrinsicSize.Min)
+                .horizontalScroll(scrollState)
+                .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(scrollState)
-                    .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                stages.forEachIndexed { index, stage ->
-                    if (index > 0) {
-                        Text(
-                            text = "▶",
-                            fontSize = 14.sp,
-                            color = secondaryTextOf(isDarkMode = isDarkMode),
-                            modifier = Modifier.padding(horizontal = 4.dp),
-                        )
-                    }
-                    EvolutionStageView(stage = stage, isDarkMode = isDarkMode)
+            stages.forEachIndexed { index, stage ->
+                if (index > 0) {
+                    Text(
+                        text = "▶",
+                        fontSize = 14.sp,
+                        color = secondaryTextOf(isDarkMode = isDarkMode),
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                    )
                 }
-            }
-
-            if (scrollState.canScrollBackward) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.CenterStart)
-                        .fillMaxHeight()
-                        .width(EDGE_FADE_WIDTH)
-                        .background(
-                            Brush.horizontalGradient(listOf(cardBg, Color.Transparent))
-                        ),
-                )
-            }
-            if (scrollState.canScrollForward) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .fillMaxHeight()
-                        .width(EDGE_FADE_WIDTH)
-                        .background(
-                            Brush.horizontalGradient(listOf(Color.Transparent, cardBg))
-                        ),
-                )
+                EvolutionStageView(stage = stage, isDarkMode = isDarkMode)
             }
         }
+
+        if (scrollState.canScrollBackward) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .fillMaxHeight()
+                    .width(EDGE_FADE_WIDTH)
+                    .background(
+                        Brush.horizontalGradient(listOf(cardBg, Color.Transparent))
+                    ),
+            )
+        }
+        if (scrollState.canScrollForward) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .fillMaxHeight()
+                    .width(EDGE_FADE_WIDTH)
+                    .background(
+                        Brush.horizontalGradient(listOf(Color.Transparent, cardBg))
+                    ),
+            )
+        }
+    }
+}
+
+@Composable
+private fun BranchingEvolutionView(
+    levels: List<List<EvolutionStageModel>>,
+    cardBg: Color,
+    isDarkMode: Boolean,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp, bottom = 12.dp),
+    ) {
+        levels.forEachIndexed { index, levelStages ->
+            if (index > 0) {
+                DepthSeparator(isDarkMode = isDarkMode)
+            }
+            EvolutionLevelRow(
+                stages = levelStages,
+                cardBg = cardBg,
+                isDarkMode = isDarkMode,
+            )
+        }
+    }
+}
+
+@Composable
+private fun EvolutionLevelRow(
+    stages: List<EvolutionStageModel>,
+    cardBg: Color,
+    isDarkMode: Boolean,
+) {
+    val scrollState = rememberScrollState()
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(scrollState)
+                .padding(horizontal = 16.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            stages.forEach { stage ->
+                EvolutionStageView(stage = stage, isDarkMode = isDarkMode)
+            }
+        }
+
+        if (scrollState.canScrollBackward) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .fillMaxHeight()
+                    .width(EDGE_FADE_WIDTH)
+                    .background(
+                        Brush.horizontalGradient(listOf(cardBg, Color.Transparent))
+                    ),
+            )
+        }
+        if (scrollState.canScrollForward) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .fillMaxHeight()
+                    .width(EDGE_FADE_WIDTH)
+                    .background(
+                        Brush.horizontalGradient(listOf(Color.Transparent, cardBg))
+                    ),
+            )
+        }
+    }
+}
+
+@Composable
+private fun DepthSeparator(isDarkMode: Boolean) {
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = "▼",
+            fontSize = 12.sp,
+            color = secondaryTextOf(isDarkMode = isDarkMode),
+        )
     }
 }
 

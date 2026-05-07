@@ -9,4 +9,5 @@ data class EvolutionStage(
     val speciesId: Int,
     val engName: String,
     val koName: String,
+    val depth: Int,
 )

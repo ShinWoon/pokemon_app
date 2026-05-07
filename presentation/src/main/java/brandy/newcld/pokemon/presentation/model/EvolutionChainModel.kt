@@ -11,6 +11,7 @@ data class EvolutionStageModel(
     val speciesId: Int,
     val displayName: String,
     val spriteUrl: String,
+    val depth: Int,
 )
 
 private const val OFFICIAL_ARTWORK_BASE =
@@ -23,6 +24,7 @@ fun EvolutionChain.toPresentationModel(): EvolutionChainModel = EvolutionChainMo
             speciesId = stage.speciesId,
             displayName = stage.koName.ifBlank { stage.engName },
             spriteUrl = "$OFFICIAL_ARTWORK_BASE/${stage.speciesId}.png",
+            depth = stage.depth,
         )
     },
 )
