@@ -2,9 +2,7 @@ package brandy.newcld.pokemon.ui.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,23 +10,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.compose.ui.graphics.luminance
 import brandy.newcld.pokemon.presentation.viewmodel.PokemonDetailViewModel
+import brandy.newcld.pokemon.ui.state.ErrorScreen
 import brandy.newcld.pokemon.ui.state.LoadingScreen
 import brandy.newcld.pokemon.ui.theme.DarkGray
 import brandy.newcld.pokemon.ui.theme.Hint
@@ -69,7 +65,7 @@ fun PokemonDetailScreen(
 
     val error = localInfo.error ?: remoteInfo.error ?: descriptionInfo.error ?: evolutionChainInfo.error
     if (error != null) {
-        ErrorView(
+        ErrorScreen(
             message = error.message ?: "데이터를 불러오지 못했어요",
             onRetry = {
                 pokemonDetailViewModel.getPokemonInfo(pid = pid)
@@ -138,25 +134,6 @@ fun PokemonDetailScreen(
                     onPlayCry = pokemonDetailViewModel::playCry,
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun ErrorView(
-    message: String,
-    onRetry: () -> Unit,
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text(text = message)
-        Button(onClick = onRetry, modifier = Modifier.padding(top = 16.dp)) {
-            Text(text = "다시 시도")
         }
     }
 }
