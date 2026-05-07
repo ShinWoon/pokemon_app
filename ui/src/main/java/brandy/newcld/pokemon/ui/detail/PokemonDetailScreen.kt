@@ -27,8 +27,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.compose.ui.graphics.luminance
 import brandy.newcld.pokemon.presentation.viewmodel.PokemonDetailViewModel
 import brandy.newcld.pokemon.ui.state.LoadingScreen
+import brandy.newcld.pokemon.ui.theme.DarkGray
+import brandy.newcld.pokemon.ui.theme.Hint
+import brandy.newcld.pokemon.ui.theme.LightText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,6 +89,9 @@ fun PokemonDetailScreen(
 
     val isDarkMode = isSystemInDarkTheme()
     val bgColor = if (isDarkMode) Color(local.nightTimeColor) else Color(local.dayTimeColor)
+    val isLightBg = bgColor.luminance() > 0.5f
+    val onBgColor = if (isLightBg) DarkGray else LightText
+    val onBgSubColor = if (isLightBg) Hint else LightText.copy(alpha = 0.7f)
 
     Box(modifier = Modifier.fillMaxSize()) {
         CollapsedAppBar(
@@ -99,6 +106,7 @@ fun PokemonDetailScreen(
             imageUrl = remote.appBarIconUrl,
             typeImageUrl = remote.typeImgUrl,
             name = local.koName,
+            onBgColor = onBgColor,
         )
         LazyColumn(
             modifier = modifier.padding(top = COLLAPSED_TOP_BAR_HEIGHT),
@@ -116,6 +124,8 @@ fun PokemonDetailScreen(
                     imageUrl = remote.imgUrl,
                     koName = local.koName,
                     engName = local.engName,
+                    koNameColor = onBgColor,
+                    engNameColor = onBgSubColor,
                 )
             }
             item {

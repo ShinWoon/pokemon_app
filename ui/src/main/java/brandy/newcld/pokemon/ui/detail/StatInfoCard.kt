@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.sp
 import brandy.newcld.pokemon.presentation.model.PokemonInfoModel
 import brandy.newcld.pokemon.presentation.model.UiState
 import brandy.newcld.pokemon.ui.theme.MediumGray
-import brandy.newcld.pokemon.ui.theme.PrimaryText
-import brandy.newcld.pokemon.ui.theme.SecondaryText
 import brandy.newcld.pokemon.ui.theme.Typography
+import brandy.newcld.pokemon.ui.theme.primaryTextOf
+import brandy.newcld.pokemon.ui.theme.secondaryTextOf
 
 @Composable
 fun StatInfoCard(
@@ -48,6 +48,7 @@ fun StatInfoCard(
                     txt = StatLabel[stat.name] ?: stat.name,
                     num = stat.value,
                     color = statColor(stat.name, isDarkMode),
+                    isDarkMode = isDarkMode
                 )
             }
         }
@@ -59,7 +60,8 @@ fun TextStatRow(
     modifier: Modifier = Modifier,
     txt: String = "",
     num: Int = 0,
-    color: Color = Color.Gray
+    color: Color = Color.Gray,
+    isDarkMode: Boolean = false,
 ) {
     val maxStat = 225
     val barWidth = 174.dp
@@ -68,7 +70,7 @@ fun TextStatRow(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.fillMaxWidth()
     ) {
-        Text(text = txt, fontSize = 14.sp, style = Typography.titleMedium, color = PrimaryText)
+        Text(text = txt, fontSize = 14.sp, style = Typography.titleMedium, color = primaryTextOf(isDarkMode = isDarkMode))
 
         Spacer(modifier = modifier.weight(1f))
 
@@ -76,7 +78,7 @@ fun TextStatRow(
             text = num.toString().padStart(3),
             fontSize = 13.sp,
             style = Typography.titleMedium,
-            color = SecondaryText,
+            color = secondaryTextOf(isDarkMode = isDarkMode),
             modifier = Modifier.width(32.dp)
         )
         Spacer(modifier.width(8.dp))

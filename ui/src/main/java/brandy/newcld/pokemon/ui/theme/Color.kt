@@ -14,9 +14,13 @@ val LightGray = Color(0xFFE0E0E0)
 val PrimaryText = Color(0xFF333333)
 val SecondaryText = Color(0xFF757575)
 val Hint = Color(0xFFBDBDBD)
+val LightText = Color(0xFFE6E1E5)
 val Disabled = Color(0xFFEEEEEE)
 val LightModeCardBackground = Color(0xFFF0EFEA)
 val DarkModeCardBackground = Color(0xFF242424)
+val DarkModeSecondaryText = Color(0xFFB5B0B5)
+val DarkModeHint          = Color(0xFF7A767A)
+val DarkModeDivider = Color(0xFF3A3A3A)
 
 // Pokemon Type Colors - Light Mode
 val LightNormalBg = Color(0xFFE8E8D8)

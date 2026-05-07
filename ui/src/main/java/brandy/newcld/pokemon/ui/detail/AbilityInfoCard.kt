@@ -16,13 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import brandy.newcld.pokemon.presentation.model.PokemonInfoModel
 import brandy.newcld.pokemon.presentation.model.UiState
-import brandy.newcld.pokemon.ui.theme.Hint
 import brandy.newcld.pokemon.ui.theme.Typography
+import brandy.newcld.pokemon.ui.theme.hintOf
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -50,6 +49,7 @@ fun AbilityInfoCard(
                     name = ability.koName ?: ability.name,
                     isHidden = ability.isHidden,
                     typeColors = typeColors,
+                    isDarkMode = isDarkMode
                 )
             }
         }
@@ -61,6 +61,7 @@ private fun AbilityChip(
     name: String,
     isHidden: Boolean,
     typeColors: PokemonTypeColor,
+    isDarkMode: Boolean = false,
 ) {
     val bgColor = if (isHidden) typeColors.background.copy(alpha = 0.3f) else typeColors.background
     val borderColor = if (isHidden) typeColors.border.copy(alpha = 0.4f) else typeColors.border
@@ -83,7 +84,7 @@ private fun AbilityChip(
         }
         if (isHidden) {
             Spacer(Modifier.height(4.dp))
-            Text(text = "숨겨진 특성", fontSize = 10.sp, color = Hint, style = Typography.bodyMedium)
+            Text(text = "숨겨진 특성", fontSize = 10.sp, color = hintOf(isDarkMode = isDarkMode), style = Typography.bodyMedium)
         }
     }
 }

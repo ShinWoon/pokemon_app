@@ -2,9 +2,9 @@ package brandy.newcld.pokemon.ui.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -28,9 +28,9 @@ import brandy.newcld.pokemon.presentation.model.EvolutionStageModel
 import brandy.newcld.pokemon.presentation.model.UiState
 import brandy.newcld.pokemon.ui.theme.DarkModeCardBackground
 import brandy.newcld.pokemon.ui.theme.LightModeCardBackground
-import brandy.newcld.pokemon.ui.theme.PrimaryText
-import brandy.newcld.pokemon.ui.theme.SecondaryText
 import brandy.newcld.pokemon.ui.theme.Typography
+import brandy.newcld.pokemon.ui.theme.primaryTextOf
+import brandy.newcld.pokemon.ui.theme.secondaryTextOf
 import coil3.compose.AsyncImage
 
 private val EDGE_FADE_WIDTH = 24.dp
@@ -54,71 +54,59 @@ fun EvolutionChainCard(
         title = "진화",
         titleColor = typeColors.textColor,
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .horizontalScroll(scrollState)
-                        .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    stages.forEachIndexed { index, stage ->
-                        if (index > 0) {
-                            Text(
-                                text = "▶",
-                                fontSize = 14.sp,
-                                color = SecondaryText,
-                                modifier = Modifier.padding(horizontal = 4.dp),
-                            )
-                        }
-                        EvolutionStageView(stage = stage)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(scrollState)
+                    .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                stages.forEachIndexed { index, stage ->
+                    if (index > 0) {
+                        Text(
+                            text = "▶",
+                            fontSize = 14.sp,
+                            color = secondaryTextOf(isDarkMode = isDarkMode),
+                            modifier = Modifier.padding(horizontal = 4.dp),
+                        )
                     }
-                }
-
-                if (scrollState.canScrollBackward) {
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.CenterStart)
-                            .fillMaxHeight()
-                            .width(EDGE_FADE_WIDTH)
-                            .background(
-                                Brush.horizontalGradient(listOf(cardBg, Color.Transparent))
-                            ),
-                    )
-                }
-                if (scrollState.canScrollForward) {
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.CenterEnd)
-                            .fillMaxHeight()
-                            .width(EDGE_FADE_WIDTH)
-                            .background(
-                                Brush.horizontalGradient(listOf(Color.Transparent, cardBg))
-                            ),
-                    )
+                    EvolutionStageView(stage = stage, isDarkMode = isDarkMode)
                 }
             }
-            if (scrollState.canScrollForward) {
-                Row(
+
+            if (scrollState.canScrollBackward) {
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 16.dp, bottom = 8.dp),
-                    horizontalArrangement = Arrangement.End,
-                ) {
-                    Text(
-                        text = "이동 ▶",
-                        fontSize = 12.sp,
-                        color = SecondaryText,
-                    )
-                }
+                        .align(Alignment.CenterStart)
+                        .fillMaxHeight()
+                        .width(EDGE_FADE_WIDTH)
+                        .background(
+                            Brush.horizontalGradient(listOf(cardBg, Color.Transparent))
+                        ),
+                )
+            }
+            if (scrollState.canScrollForward) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .fillMaxHeight()
+                        .width(EDGE_FADE_WIDTH)
+                        .background(
+                            Brush.horizontalGradient(listOf(Color.Transparent, cardBg))
+                        ),
+                )
             }
         }
     }
 }
 
 @Composable
-private fun EvolutionStageView(stage: EvolutionStageModel) {
+private fun EvolutionStageView(stage: EvolutionStageModel, isDarkMode: Boolean) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.width(80.dp),
@@ -138,7 +126,7 @@ private fun EvolutionStageView(stage: EvolutionStageModel) {
             text = stage.displayName,
             fontSize = 12.sp,
             style = Typography.titleSmall,
-            color = PrimaryText,
+            color = primaryTextOf(isDarkMode = isDarkMode),
             textAlign = TextAlign.Center,
         )
     }

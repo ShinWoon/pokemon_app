@@ -13,10 +13,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import brandy.newcld.pokemon.ui.theme.DarkModeCardBackground
+import brandy.newcld.pokemon.ui.theme.DarkModeDivider
+import brandy.newcld.pokemon.ui.theme.LightGray
 import brandy.newcld.pokemon.ui.theme.LightModeCardBackground
 import brandy.newcld.pokemon.ui.theme.PrimaryText
 import brandy.newcld.pokemon.ui.theme.Typography
@@ -53,6 +54,6 @@ fun DetailCommonCard(
 }
 
 @Composable
-fun VerticalDivider(modifier: Modifier = Modifier) {
-    Box(modifier = modifier.width(1.dp).height(40.dp).background(Color(0xFFE0E0E0)))
+fun VerticalDivider(modifier: Modifier = Modifier, isDarkMode: Boolean = false) {
+    Box(modifier = modifier.width(1.dp).height(40.dp).background(if(isDarkMode) DarkModeDivider else LightGray))
 }

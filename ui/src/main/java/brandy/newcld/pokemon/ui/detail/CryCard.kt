@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.sp
 import brandy.newcld.pokemon.presentation.model.PokemonInfoModel
 import brandy.newcld.pokemon.presentation.model.UiState
 import brandy.newcld.pokemon.ui.R
-import brandy.newcld.pokemon.ui.theme.SecondaryText
 import brandy.newcld.pokemon.ui.theme.Typography
+import brandy.newcld.pokemon.ui.theme.secondaryTextOf
 
 @Composable
 fun CryCard(
@@ -52,7 +52,7 @@ fun CryCard(
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             SoundButtonView(txt = "최신 소리", enabled = latest.isNotBlank(), onClick = {onPlay(latest)})
-            VerticalDivider()
+            VerticalDivider(isDarkMode = isDarkMode)
             SoundButtonView(txt = "예전 소리", enabled = legacy.isNotBlank(), onClick = {onPlay(legacy)})
         }
     }
@@ -63,6 +63,7 @@ private fun SoundButtonView(
     modifier: Modifier = Modifier,
     txt: String = "",
     enabled: Boolean,
+    isDarkMode: Boolean = false,
     onClick: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -83,7 +84,7 @@ private fun SoundButtonView(
     ) {
         Icon(
             painter = painterResource(R.drawable.volume_down_round),
-            tint = SecondaryText,
+            tint = secondaryTextOf(isDarkMode = isDarkMode),
             contentDescription = "$txt 아이콘",
             modifier = modifier
                 .size(24.dp)
@@ -94,7 +95,7 @@ private fun SoundButtonView(
             text = txt,
             style = Typography.titleSmall,
             fontSize = 12.sp,
-            color = SecondaryText
+            color = secondaryTextOf(isDarkMode = isDarkMode)
         )
     }
 }
