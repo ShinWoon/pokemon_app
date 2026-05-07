@@ -38,6 +38,7 @@ fun CryCard(
 ) {
     val latest = remoteInfo.data?.cryLatestUrl.orEmpty()
     val legacy = remoteInfo.data?.cryLegacyUrl.orEmpty()
+    if (latest.isBlank() && legacy.isBlank()) return
 
     DetailCommonCard(
         modifier = modifier,
