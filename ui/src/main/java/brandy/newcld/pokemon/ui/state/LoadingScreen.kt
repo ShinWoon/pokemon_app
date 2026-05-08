@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import brandy.newcld.pokemon.ui.R
-import brandy.newcld.pokemon.ui.theme.PrimaryText
 import brandy.newcld.pokemon.ui.theme.Typography
+import brandy.newcld.pokemon.ui.theme.primaryTextOf
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -23,7 +23,8 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 
 @Composable
 fun LoadingScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isDarkMode: Boolean
 ) {
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.pikachu_running) // res/raw 폴더에 .json 파일
@@ -44,6 +45,6 @@ fun LoadingScreen(
             modifier = modifier.size(160.dp)
         )
         Spacer(modifier = modifier.size(8.dp))
-        Text(text = "로딩 중", style = Typography.titleLarge, color = PrimaryText, fontSize = 16.sp)
+        Text(text = "로딩 중", style = Typography.titleLarge, color = primaryTextOf(isDarkMode), fontSize = 16.sp)
     }
 }

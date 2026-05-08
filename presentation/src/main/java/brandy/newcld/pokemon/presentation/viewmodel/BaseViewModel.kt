@@ -33,7 +33,7 @@ abstract class BaseViewModel: ViewModel() {
                     )
                     is DataResource.Error -> current.copy(
                         isLoading = false,
-                        error = res.throwable
+                        error = res.error
                     )
                 }
             }
@@ -56,7 +56,7 @@ abstract class BaseViewModel: ViewModel() {
                     )
                     is DataResource.Error -> current.copy(
                         isLoading = false,
-                        error = res.throwable
+                        error = res.error
                     )
                 }
             }
@@ -74,8 +74,8 @@ abstract class BaseViewModel: ViewModel() {
     ): Flow<DataResource<R>> =
         combine(fa, fb) { ra, rb ->
             when {
-                ra is DataResource.Error -> DataResource.Error(ra.throwable)
-                rb is DataResource.Error -> DataResource.Error(rb.throwable)
+                ra is DataResource.Error -> DataResource.Error(ra.error)
+                rb is DataResource.Error -> DataResource.Error(rb.error)
                 ra is DataResource.Loading || rb is DataResource.Loading -> DataResource.Loading()
                 ra is DataResource.Success && rb is DataResource.Success ->
                     DataResource.Success(combiner(ra.data, rb.data))

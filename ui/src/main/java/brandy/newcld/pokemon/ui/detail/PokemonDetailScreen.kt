@@ -40,6 +40,7 @@ fun PokemonDetailScreen(
 ) {
     val COLLAPSED_TOP_BAR_HEIGHT = 64.dp
     val EXPANDED_TOP_BAR_HEIGHT = 256.dp
+    val isDarkMode = isSystemInDarkTheme()
 
     val overlapHeightPx = with(LocalDensity.current) {
         EXPANDED_TOP_BAR_HEIGHT.toPx() - COLLAPSED_TOP_BAR_HEIGHT.toPx()
@@ -66,7 +67,8 @@ fun PokemonDetailScreen(
     val error = localInfo.error ?: remoteInfo.error ?: descriptionInfo.error ?: evolutionChainInfo.error
     if (error != null) {
         ErrorScreen(
-            message = error.message ?: "데이터를 불러오지 못했어요",
+            error = error,
+            isDarkMode = isDarkMode,
             onRetry = {
                 pokemonDetailViewModel.getPokemonInfo(pid = pid)
                 pokemonDetailViewModel.loadLocalInfo(pid = pid)
@@ -76,14 +78,13 @@ fun PokemonDetailScreen(
     }
 
     if (localInfo.isLoading || remoteInfo.isLoading || descriptionInfo.isLoading || evolutionChainInfo.isLoading) {
-        LoadingScreen()
+        LoadingScreen(isDarkMode = isDarkMode)
         return
     }
 
     val local = localInfo.data ?: return
     val remote = remoteInfo.data ?: return
 
-    val isDarkMode = isSystemInDarkTheme()
     val bgColor = if (isDarkMode) Color(local.nightTimeColor) else Color(local.dayTimeColor)
     val isLightBg = bgColor.luminance() > 0.5f
     val onBgColor = if (isLightBg) DarkGray else LightText
