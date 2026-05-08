@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
@@ -28,6 +29,8 @@ fun ExpandedAppBar(
     imageUrl: String,
     koName: String,
     engName: String,
+    koNameColor: Color = DarkGray,
+    engNameColor: Color = Hint,
 ) {
     Box (
         modifier = boxModifier
@@ -54,14 +57,14 @@ fun ExpandedAppBar(
                 Text(
                     koName,
                     style = Typography.titleLarge,
-                    color = DarkGray,
+                    color = koNameColor,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     engName,
                     style = Typography.titleSmall,
-                    color = Hint,
+                    color = engNameColor,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )

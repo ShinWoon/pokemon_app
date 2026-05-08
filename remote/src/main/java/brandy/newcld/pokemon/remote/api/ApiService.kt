@@ -1,7 +1,10 @@
 package brandy.newcld.pokemon.remote.api
 
+import brandy.newcld.pokemon.remote.model.AbilityResponse
+import brandy.newcld.pokemon.remote.model.EvolutionChainResponse
 import brandy.newcld.pokemon.remote.model.PokemonInfoResponse
 import brandy.newcld.pokemon.remote.model.PokemonResponse
+import brandy.newcld.pokemon.remote.model.PokemonSpeciesResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -19,4 +22,23 @@ interface ApiService {
     suspend fun getPokemonInfo(
         @Path("id") id: Int
     ): PokemonInfoResponse
+
+    /* 포켓몬 도감 설명 호출 */
+    @GET("pokemon-species/{id}")
+    suspend fun getPokemonSpecies(
+        @Path("id") id: Int
+    ): PokemonSpeciesResponse
+
+    /* 포켓몬 특성 호출 */
+    @GET("ability/{name}")
+    suspend fun getAbility(
+        @Path("name") name: String
+    ): AbilityResponse
+
+    /* 포켓몬 진화 체인 호출 */
+    @GET("evolution-chain/{id}")
+    suspend fun getEvolutionChain(
+        @Path("id") id: Int
+    ): EvolutionChainResponse
+
 }

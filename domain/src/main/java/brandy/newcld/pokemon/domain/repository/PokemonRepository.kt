@@ -2,6 +2,8 @@ package brandy.newcld.pokemon.domain.repository
 
 import androidx.paging.PagingData
 import brandy.newcld.pokemon.dataresource.DataResource
+import brandy.newcld.pokemon.domain.model.Ability
+import brandy.newcld.pokemon.domain.model.EvolutionChain
 import brandy.newcld.pokemon.domain.model.NameUrl
 import brandy.newcld.pokemon.domain.model.PokemonDetailLocalInfoItem
 import brandy.newcld.pokemon.domain.model.PokemonInfo
@@ -18,4 +20,10 @@ interface PokemonRepository {
     fun getPokemonLocalPaging(): Flow<PagingData<PokemonListItemLocal>>
 
     fun getPokemonDetailLocalInfo(pid: Int): Flow<DataResource<PokemonDetailLocalInfoItem>>
+
+    fun getPokemonSpecies(id: Int): Flow<DataResource<String>>
+
+    fun getAbility(name: String): Flow<DataResource<Ability>>
+
+    fun getEvolutionChain(pokemonId: Int): Flow<DataResource<EvolutionChain>>
 }

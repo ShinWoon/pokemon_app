@@ -1,8 +1,9 @@
 package brandy.newcld.pokemon.ui.detail
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -10,18 +11,24 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import brandy.newcld.pokemon.presentation.viewmodel.PokemonDetailViewModel
+import brandy.newcld.pokemon.ui.state.ErrorScreen
+import brandy.newcld.pokemon.ui.state.LoadingScreen
+import brandy.newcld.pokemon.ui.theme.DarkGray
+import brandy.newcld.pokemon.ui.theme.Hint
+import brandy.newcld.pokemon.ui.theme.LightText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,6 +40,7 @@ fun PokemonDetailScreen(
 ) {
     val COLLAPSED_TOP_BAR_HEIGHT = 64.dp
     val EXPANDED_TOP_BAR_HEIGHT = 256.dp
+    val isDarkMode = isSystemInDarkTheme()
 
     val overlapHeightPx = with(LocalDensity.current) {
         EXPANDED_TOP_BAR_HEIGHT.toPx() - COLLAPSED_TOP_BAR_HEIGHT.toPx()
@@ -46,23 +54,56 @@ fun PokemonDetailScreen(
         }
     }
 
+    val localInfo by pokemonDetailViewModel.localAppBarInfoUiState.collectAsState()
+    val remoteInfo by pokemonDetailViewModel.remotePokemonInfoUiState.collectAsState()
+    val descriptionInfo by pokemonDetailViewModel.descriptionUiState.collectAsState()
+    val evolutionChainInfo by pokemonDetailViewModel.evolutionChainUiState.collectAsState()
+
     LaunchedEffect(Unit) {
-//        pokemonDetailViewModel.getPokemonInfo(pid = pid)
+        pokemonDetailViewModel.getPokemonInfo(pid = pid)
+        pokemonDetailViewModel.loadLocalInfo(pid = pid)
     }
 
-    Box {
+    val error = localInfo.error ?: remoteInfo.error ?: descriptionInfo.error ?: evolutionChainInfo.error
+    if (error != null) {
+        ErrorScreen(
+            error = error,
+            isDarkMode = isDarkMode,
+            onRetry = {
+                pokemonDetailViewModel.getPokemonInfo(pid = pid)
+                pokemonDetailViewModel.loadLocalInfo(pid = pid)
+            },
+        )
+        return
+    }
+
+    if (localInfo.isLoading || remoteInfo.isLoading || descriptionInfo.isLoading || evolutionChainInfo.isLoading) {
+        LoadingScreen(isDarkMode = isDarkMode)
+        return
+    }
+
+    val local = localInfo.data ?: return
+    val remote = remoteInfo.data ?: return
+
+    val bgColor = if (isDarkMode) Color(local.nightTimeColor) else Color(local.dayTimeColor)
+    val isLightBg = bgColor.luminance() > 0.5f
+    val onBgColor = if (isLightBg) DarkGray else LightText
+    val onBgSubColor = if (isLightBg) Hint else LightText.copy(alpha = 0.7f)
+
+    Box(modifier = Modifier.fillMaxSize()) {
         CollapsedAppBar(
             modifier = modifier.zIndex(2f),
             boxModifier = modifier
                 .zIndex(2f)
                 .fillMaxWidth()
                 .height(COLLAPSED_TOP_BAR_HEIGHT)
-                .background(color = Color.White),
+                .background(color = bgColor),
             onClickBack = onClickBack,
             isCollapsed = isCollapsed,
-            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pid}.png",
-            typeImageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/18.png",
-            name = "이름"
+            imageUrl = remote.appBarIconUrl,
+            typeImageUrl = remote.typeImgUrl,
+            name = local.koName,
+            onBgColor = onBgColor,
         )
         LazyColumn(
             modifier = modifier.padding(top = COLLAPSED_TOP_BAR_HEIGHT),
@@ -74,18 +115,25 @@ fun PokemonDetailScreen(
                         .fillMaxWidth()
                         .height(EXPANDED_TOP_BAR_HEIGHT - COLLAPSED_TOP_BAR_HEIGHT)
                         .background(
-                            color = Color.White,
+                            color = bgColor,
                             shape = RoundedCornerShape(0.dp, 0.dp, 16.dp, 16.dp)
                         ),
-                    imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pid}.png",
-                    koName = "이름",
-                    engName = "name"
+                    imageUrl = remote.imgUrl,
+                    koName = local.koName,
+                    engName = local.engName,
+                    koNameColor = onBgColor,
+                    engNameColor = onBgSubColor,
                 )
             }
             item {
-                Spacer(Modifier.height(16.dp))
-                Text("상세 내용 id=$pid", Modifier.padding(horizontal = 16.dp))
-                Spacer(Modifier.height(1200.dp)) // 테스트용
+                PokemonDetailContent(
+                    modifier = modifier,
+                    isDarkMode = isDarkMode,
+                    remoteInfo = remoteInfo,
+                    descriptionInfo = descriptionInfo,
+                    evolutionChainInfo = evolutionChainInfo,
+                    onPlayCry = pokemonDetailViewModel::playCry,
+                )
             }
         }
     }

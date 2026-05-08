@@ -16,4 +16,7 @@ interface PokemonDao {
 
     @Query("UPDATE ${RoomConstant.ROOM_DB_NAME} SET day_time_color = :dayTimeColor, night_time_color = :nightTimeColor WHERE id = :pid")
     fun updateColor(pid: Int, dayTimeColor: String, nightTimeColor: String)
+
+    @Query("SELECT ko_name FROM ${RoomConstant.ROOM_DB_NAME} WHERE id = :pid")
+    suspend fun getKoName(pid: Int): String?
 }

@@ -1,6 +1,5 @@
 package brandy.newcld.pokemon.remote.model
 
-import brandy.newcld.pokemon.data.model.HeldItemEntity
 import brandy.newcld.pokemon.data.model.VersionDetailEntity
 import brandy.newcld.pokemon.remote.RemoteMapper
 import com.google.gson.annotations.SerializedName

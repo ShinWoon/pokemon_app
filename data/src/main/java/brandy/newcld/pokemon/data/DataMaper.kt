@@ -20,7 +20,7 @@ internal fun <EntityModel, DomainModel> EntityModel.toDomainModel(): DomainModel
             domainModel
         }
         is PagingData<*> -> (this as PagingData<DataMapper<Any>>).toDomainPaging() as DomainModel
-        is Unit, Boolean, Int, String, Byte, Short, Long, Char -> this
+        is Unit, is Boolean, is Int, is String, is Byte, is Short, is Long, is Char -> this
         else -> {
             throw IllegalArgumentException("DataModel은 DataMapper<>, List<DataMapper<>>, PagingData<DataMapper<>>, Unit으로 구성되어야 합니다")
         }

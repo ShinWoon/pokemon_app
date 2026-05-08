@@ -1,5 +1,7 @@
 package brandy.newcld.pokemon.data.remote
 
+import brandy.newcld.pokemon.data.model.AbilityEntity
+import brandy.newcld.pokemon.data.model.EvolutionChainEntity
 import brandy.newcld.pokemon.data.model.NameUrlEntity
 import brandy.newcld.pokemon.data.model.PokemonInfoEntity
 
@@ -7,4 +9,12 @@ interface PokemonRemoteDataSource {
     suspend fun getPokemonList(limit: Int, offset: Int): List<NameUrlEntity>
 
     suspend fun getPokemonInfo(id: Int): PokemonInfoEntity
+
+    suspend fun getPokemonSpecies(id: Int): String
+
+    suspend fun getEvolutionChainIdForPokemon(pokemonId: Int): Int?
+
+    suspend fun getEvolutionChain(chainId: Int): EvolutionChainEntity
+
+    suspend fun getAbility(name: String): AbilityEntity
 }

@@ -15,13 +15,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import brandy.newcld.pokemon.presentation.model.DayNight
 import brandy.newcld.pokemon.presentation.model.PokemonItemLocalModel
 import brandy.newcld.pokemon.presentation.model.PokemonListItemModel
+import brandy.newcld.pokemon.ui.theme.DarkGray
 import brandy.newcld.pokemon.ui.theme.DefaultLightGray
+import brandy.newcld.pokemon.ui.theme.LightText
 import brandy.newcld.pokemon.ui.theme.Typography
 import brandy.newcld.pokemon.ui.util.PaletteUtil.paletteBackgroundColor
 import coil3.compose.AsyncImage
@@ -52,6 +55,7 @@ fun PokemonListItem(
         !isDarkMode && tmpBgColors != null -> Color(tmpBgColors.day)
         else -> DefaultLightGray
     }
+    val nameColor = if (backgroundColor.luminance() > 0.5f) DarkGray else LightText
 
     Box(
         modifier = modifier
@@ -79,7 +83,7 @@ fun PokemonListItem(
             Text(
                 text = pokemonItemLocalModel.koName,
                 style = Typography.titleMedium,
-                color = Color.White
+                color = nameColor
             )
         }
     }

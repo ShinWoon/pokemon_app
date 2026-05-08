@@ -40,7 +40,7 @@ android {
 
 dependencies {
     implementation(project(":presentation"))
-    implementation(libs.androidx.media3.exoplayer)
+    implementation(project(":dataresource"))
 
     val composeBom = platform("androidx.compose:compose-bom:2024.09.02")
     implementation(composeBom)
@@ -65,6 +65,7 @@ dependencies {
     // Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+    implementation(libs.coil.gif)
 
     // Palette
     implementation(libs.androidx.palette)
@@ -79,6 +80,9 @@ dependencies {
 
     // paging
     implementation(libs.androidx.paging.compose)
+
+    // lottie
+    implementation(libs.lottie.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -1,6 +1,5 @@
 package brandy.newcld.pokemon.ui.list
 
-import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
-import brandy.newcld.pokemon.presentation.model.PokemonItemLocalModel
 import brandy.newcld.pokemon.presentation.viewmodel.PokemonListViewModel
 import brandy.newcld.pokemon.ui.theme.Background
 import brandy.newcld.pokemon.ui.theme.DarkModeBackground
@@ -46,7 +44,7 @@ fun PokemonListScreen(
         pokemonListViewModel.getPokemonList()
         pokemonListViewModel.getPokemonLocalList()
     }
-    Column {
+    Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             title = {
                 Text(
@@ -74,7 +72,6 @@ fun PokemonListScreen(
                 key = { index -> items[index]?.id ?: index },
             ) { index ->
                 val pokemon = items[index]
-                Log.d(TAG, "PokemonListScreen: ${localItems.toString()}")
                 val pokemonLocal = localItems[index]
                 val tmp = tmpMap[pokemon?.id ?: 1]
                 if(pokemon != null && pokemonLocal != null) {
