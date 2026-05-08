@@ -13,13 +13,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import brandy.newcld.pokemon.dataresource.toAppError
 import brandy.newcld.pokemon.presentation.viewmodel.PokemonListViewModel
+import brandy.newcld.pokemon.ui.state.ErrorScreen
+import brandy.newcld.pokemon.ui.state.LoadingScreen
 import brandy.newcld.pokemon.ui.theme.Background
 import brandy.newcld.pokemon.ui.theme.DarkModeBackground
 import brandy.newcld.pokemon.ui.theme.Secondary
@@ -35,15 +38,13 @@ fun PokemonListScreen(
     onItemClick : (pid: Int) -> Unit,
 ) {
     val items = pokemonListViewModel.pokemonList.collectAsLazyPagingItems()
-    val localItems = pokemonListViewModel.pokemonLocalItemList.collectAsLazyPagingItems()
+    val localById by pokemonListViewModel.localById.collectAsState()
     val tmpMap by pokemonListViewModel.bgColors.collectAsState()
 
     val isDarkMode = isSystemInDarkTheme()
+    val refresh = items.loadState.refresh
+    val isReady = refresh is LoadState.NotLoading && items.itemCount > 0 && localById.isNotEmpty()
 
-    LaunchedEffect(Unit) {
-        pokemonListViewModel.getPokemonList()
-        pokemonListViewModel.getPokemonLocalList()
-    }
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             title = {
@@ -59,22 +60,28 @@ fun PokemonListScreen(
                 containerColor = if(isDarkMode) DarkModeBackground else Background
             ),
         )
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 160.dp),
-            modifier = modifier
-                .fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(12.dp)
-        ) {
-            items(
-                count = items.itemCount,
-                key = { index -> items[index]?.id ?: index },
-            ) { index ->
-                val pokemon = items[index]
-                val pokemonLocal = localItems[index]
-                val tmp = tmpMap[pokemon?.id ?: 1]
-                if(pokemon != null && pokemonLocal != null) {
+        when {
+            refresh is LoadState.Error -> ErrorScreen(
+                error = refresh.error.toAppError(),
+                isDarkMode = isDarkMode,
+                onRetry = { items.retry() },
+            )
+            !isReady -> LoadingScreen(isDarkMode = isDarkMode)
+            else -> LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = 160.dp),
+                modifier = modifier
+                    .fillMaxSize(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(12.dp)
+            ) {
+                items(
+                    count = items.itemCount,
+                    key = { index -> items[index]?.id ?: index },
+                ) { index ->
+                    val pokemon = items[index] ?: return@items
+                    val pokemonLocal = localById[pokemon.id] ?: return@items
+                    val tmp = tmpMap[pokemon.id]
                     PokemonListItem(
                         modifier = modifier,
                         onClick = { onItemClick(pokemon.id) },

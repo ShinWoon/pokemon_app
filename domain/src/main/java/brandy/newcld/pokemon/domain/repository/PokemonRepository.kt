@@ -17,7 +17,7 @@ interface PokemonRepository {
 
     fun updateBackgroundColors(pid: Int, dayTimeColor: String, nightTimeColor: String): Flow<DataResource<Unit>>
 
-    fun getPokemonLocalPaging(): Flow<PagingData<PokemonListItemLocal>>
+    fun getAllLocal(): Flow<List<PokemonListItemLocal>>
 
     fun getPokemonDetailLocalInfo(pid: Int): Flow<DataResource<PokemonDetailLocalInfoItem>>
 

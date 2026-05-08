@@ -1,15 +1,15 @@
 package brandy.newcld.pokemon.local.room
 
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import brandy.newcld.pokemon.local.model.PokemonDetailLocalInfoEntity
 import brandy.newcld.pokemon.local.model.PokemonListItemLocalDto
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PokemonDao {
     @Query("SELECT * FROM ${RoomConstant.ROOM_DB_NAME} ORDER BY id")
-    fun getLocalPaging(): PagingSource<Int, PokemonListItemLocalDto>
+    fun getAllAsFlow(): Flow<List<PokemonListItemLocalDto>>
 
     @Query("SELECT * FROM ${RoomConstant.ROOM_DB_NAME} WHERE id = :pid")
     fun getAll(pid: Int): PokemonDetailLocalInfoEntity

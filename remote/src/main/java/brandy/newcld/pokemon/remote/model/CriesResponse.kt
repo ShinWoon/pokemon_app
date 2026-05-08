@@ -7,9 +7,9 @@ import com.google.gson.annotations.SerializedName
 
 data class CriesResponse(
     @SerializedName("latest")
-    val latest: String,
+    val latest: String?,
     @SerializedName("legacy")
-    val legacy: String
+    val legacy: String?
 ): RemoteMapper<CriesEntity> {
     override fun toData(): CriesEntity =
         CriesEntity(latest, legacy)

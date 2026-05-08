@@ -44,7 +44,8 @@ class PokemonRepositoryImpl @Inject constructor(
         nightTimeColor: String
     ): Flow<DataResource<Unit>> = flowDataResource { localDataSource.updateBackgroundColors(pid, dayTimeColor, nightTimeColor) }
 
-    override fun getPokemonLocalPaging(): Flow<PagingData<PokemonListItemLocal>> = localDataSource.getLocalPaging().map { it.toDomainModel() }
+    override fun getAllLocal(): Flow<List<PokemonListItemLocal>> =
+        localDataSource.getAllLocal().map { it.toDomainModel() }
 
     override fun getPokemonDetailLocalInfo(pid: Int): Flow<DataResource<PokemonDetailLocalInfoItem>> = flowDataResource {
         localDataSource.getPokemonDetailLocalInfo(pid = pid)

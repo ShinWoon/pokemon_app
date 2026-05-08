@@ -1,9 +1,5 @@
 package brandy.newcld.pokemon.local.impl
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.map
 import brandy.newcld.pokemon.data.local.PokemonLocalDataSource
 import brandy.newcld.pokemon.data.model.AbilityEntity
 import brandy.newcld.pokemon.data.model.EvolutionChainEntity
@@ -26,11 +22,8 @@ class LocalDataSourceImpl @Inject constructor(
     override suspend fun getPokemonDetailLocalInfo(pid: Int): PokemonDetailLocalInfoEntity =
         pokemonDao.getAll(pid = pid).toData()
 
-    override fun getLocalPaging(): Flow<PagingData<PokemonListItemLocalEntity>> = Pager(
-        config = PagingConfig(pageSize = 300, enablePlaceholders = false),
-        pagingSourceFactory = { pokemonDao.getLocalPaging() }
-    ).flow
-        .map { it.map { entity -> entity.toData() } }
+    override fun getAllLocal(): Flow<List<PokemonListItemLocalEntity>> =
+        pokemonDao.getAllAsFlow().map { list -> list.map { it.toData() } }
 
     override suspend fun updateBackgroundColors(
         pid: Int,
