@@ -29,8 +29,6 @@ import brandy.newcld.pokemon.presentation.viewmodel.PokemonListViewModel
 import brandy.newcld.pokemon.ui.state.ErrorScreen
 import brandy.newcld.pokemon.ui.state.LoadingScreen
 
-private const val TAG = "PokemonListScreen"
-
 @Composable
 fun PokemonListScreen(
     modifier: Modifier = Modifier,
