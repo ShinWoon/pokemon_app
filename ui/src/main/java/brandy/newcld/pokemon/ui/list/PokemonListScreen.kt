@@ -89,7 +89,7 @@ fun PokemonListScreen(
                 ) {
                     items(
                         count = items.itemCount,
-                        key = { index -> items[index]?.id ?: index },
+                        key = { index -> items[index]?.id?.toLong() ?: (-index.toLong() - 1L) },
                     ) { index ->
                         val pokemon = items[index]
                         val pokemonLocal = pokemon?.let { localById[it.id] }
