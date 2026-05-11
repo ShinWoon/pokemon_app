@@ -114,6 +114,24 @@ fun PokemonListItem(
 }
 
 @Composable
+fun PokemonListItemSkeleton(
+    isDarkMode: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .size(176.dp)
+            .background(
+                color = if (isDarkMode) DarkModeCardBackground else DefaultLightGray,
+                shape = RoundedCornerShape(16.dp),
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        SkeletonContent(isDarkMode = isDarkMode)
+    }
+}
+
+@Composable
 private fun SkeletonContent(isDarkMode: Boolean) {
     val brush = rememberShimmerBrush(isDarkMode = isDarkMode)
     Column(

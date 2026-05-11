@@ -3,6 +3,7 @@ package brandy.newcld.pokemon.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.filter
 import androidx.paging.map
 import brandy.newcld.pokemon.domain.usecase.GetAllLocalUseCase
 import brandy.newcld.pokemon.domain.usecase.GetPokemonListUseCase
@@ -21,6 +22,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -33,15 +36,27 @@ class PokemonListViewModel @Inject constructor(
     private val getAllLocalUseCase: GetAllLocalUseCase,
     private val updateBackgroundColorsUseCase: UpdateBackgroundColorsUseCase
 ): BaseViewModel() {
-    val pokemonList: Flow<PagingData<PokemonListItemModel>> =
-        getPokemonListUseCase()
-            .map { pagingData -> pagingData.map { it.toPokemonListItemModel() } }
-            .cachedIn(viewModelScope)
-
     val localById: StateFlow<Map<Int, PokemonItemLocalModel>> =
         getAllLocalUseCase()
             .map { list -> list.associate { it.pid to it.toPokemonItemLocalModel() } }
             .stateIn(viewModelScope, SharingStarted.Eagerly, emptyMap())
+
+    private val localIds: StateFlow<Set<Int>> =
+        getAllLocalUseCase()
+            .map { list -> list.map { it.pid }.toSet() }
+            .distinctUntilChanged()
+            .stateIn(viewModelScope, SharingStarted.Eagerly, emptySet())
+
+    val pokemonList: Flow<PagingData<PokemonListItemModel>> =
+        combine(
+            getPokemonListUseCase()
+                .map { pagingData -> pagingData.map { it.toPokemonListItemModel() } }
+                .cachedIn(viewModelScope),
+            localIds,
+        ) { paging, ids ->
+            if (ids.isEmpty()) paging
+            else paging.filter { it.id in ids }
+        }
 
     private val _updateState = MutableStateFlow(UiState<Int>())
     val updateState = _updateState.asStateFlow()

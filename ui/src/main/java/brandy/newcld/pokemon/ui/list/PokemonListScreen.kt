@@ -79,8 +79,14 @@ fun PokemonListScreen(
                     count = items.itemCount,
                     key = { index -> items[index]?.id ?: index },
                 ) { index ->
-                    val pokemon = items[index] ?: return@items
-                    val pokemonLocal = localById[pokemon.id] ?: return@items
+                    val pokemon = items[index]
+                    val pokemonLocal = pokemon?.let { localById[it.id] }
+
+                    if (pokemon == null || pokemonLocal == null) {
+                        PokemonListItemSkeleton(isDarkMode = isDarkMode)
+                        return@items
+                    }
+
                     val tmp = tmpMap[pokemon.id]
                     PokemonListItem(
                         modifier = modifier,
