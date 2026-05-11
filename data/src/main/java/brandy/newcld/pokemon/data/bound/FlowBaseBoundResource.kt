@@ -17,6 +17,7 @@ abstract class FlowBaseBoundResource<DomainType, DataType>(private val dataActio
             collector.emit(DataResource.success(domainModel))
             successAction?.invoke(data)
         } catch (exception: Exception) {
+            if (exception is kotlinx.coroutines.CancellationException) throw exception
             collector.emit(DataResource.error(exception))
         }
     }

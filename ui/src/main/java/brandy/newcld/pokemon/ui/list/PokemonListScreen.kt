@@ -29,8 +29,6 @@ import brandy.newcld.pokemon.presentation.viewmodel.PokemonListViewModel
 import brandy.newcld.pokemon.ui.state.ErrorScreen
 import brandy.newcld.pokemon.ui.state.LoadingScreen
 
-private const val TAG = "PokemonListScreen"
-
 @Composable
 fun PokemonListScreen(
     modifier: Modifier = Modifier,
@@ -91,7 +89,7 @@ fun PokemonListScreen(
                 ) {
                     items(
                         count = items.itemCount,
-                        key = { index -> items[index]?.id ?: index },
+                        key = { index -> items[index]?.id?.toLong() ?: (-index.toLong() - 1L) },
                     ) { index ->
                         val pokemon = items[index]
                         val pokemonLocal = pokemon?.let { localById[it.id] }

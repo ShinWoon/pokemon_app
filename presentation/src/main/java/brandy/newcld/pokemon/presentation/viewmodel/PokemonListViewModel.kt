@@ -43,11 +43,10 @@ class PokemonListViewModel @Inject constructor(
             .map { list -> list.associate { it.pid to it.toPokemonItemLocalModel() } }
             .stateIn(viewModelScope, SharingStarted.Eagerly, emptyMap())
 
-    private val localIds: StateFlow<Set<Int>> =
-        getAllLocalUseCase()
-            .map { list -> list.map { it.pid }.toSet() }
-            .distinctUntilChanged()
-            .stateIn(viewModelScope, SharingStarted.Eagerly, emptySet())
+    private val localIds: StateFlow<Set<Int>> = localById
+        .map { it.keys }
+        .distinctUntilChanged()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptySet())
 
     val pokemonList: Flow<PagingData<PokemonListItemModel>> =
         combine(
