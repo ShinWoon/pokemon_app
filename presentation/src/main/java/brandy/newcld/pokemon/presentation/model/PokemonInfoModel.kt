@@ -39,6 +39,6 @@ fun PokemonInfo.toPresentationModel(): PokemonInfoModel = PokemonInfoModel(
     imgUrl = sprites.other.officialArtwork.frontDefault,
     appBarIconUrl = sprites.frontDefault,
     typeImgUrl = types.firstOrNull()?.imgUrl ?: "",
-    cryLatestUrl = cries.latest,
-    cryLegacyUrl = cries.legacy,
+    cryLatestUrl = cries.latest.orEmpty(),
+    cryLegacyUrl = cries.legacy.orEmpty(),
 )

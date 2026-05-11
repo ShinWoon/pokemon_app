@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface PokemonLocalDataSource {
     suspend fun getPokemonDetailLocalInfo(pid: Int): PokemonDetailLocalInfoEntity
 
-    fun getLocalPaging(): Flow<PagingData<PokemonListItemLocalEntity>>
+    fun getAllLocal(): Flow<List<PokemonListItemLocalEntity>>
 
     suspend fun updateBackgroundColors(pid: Int, dayTimeColor: String, nightTimeColor: String)
 
