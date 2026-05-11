@@ -44,7 +44,6 @@
 - **순수 Kotlin 도메인 모듈** — 안드로이드 의존성 없이 비즈니스 로직 분리
 - **Paging 3 + Room** — 페이지네이션과 로컬 캐시 동시 적용
 - **Jetpack Compose UI** — Collapsing Toolbar, 상태 기반 화면 분기, 애니메이션
-- **Hilt 모듈 분리** — Network / Repository / DataSource(Local·Remote) / Sound 모듈을 책임 단위로 구성
 - **KAPT → KSP 전환** — 빌드 속도 개선
 - **Palette 기반 동적 컬러** — 포켓몬 이미지에서 추출한 색상으로 UI 톤 매칭
 
@@ -53,11 +52,11 @@
 ## ✨ 주요 기능
 
 - 포켓몬 목록 무한 스크롤 (Paging 3 + Room 캐시)
-- 이름 기반 검색
+- 포켓몬 이름 기반 검색 (한글)
 - 상세 화면: 기본 정보 / 능력치 / 어빌리티(한글 설명) / 진화 체인 / 울음소리 재생
 - Collapsing AppBar + 포켓몬 이미지 기반 동적 컬러 적용
-- 로딩 / 에러 / 빈 상태 화면 분기
-- 데이터 누락 시 카드 자동 숨김 (설명, 울음소리 등)
+- 로딩 / 에러 상태 화면 분기
+- 다크모드 & 라이트모드에 따라 화면 색상 변경
 
 ---
 
@@ -69,17 +68,17 @@
 - `data`는 `domain`의 Repository 인터페이스를 구현하며, 안드로이드/프레임워크 의존성은 `domain`에 침투하지 않습니다.
 - `app` 모듈은 Hilt로 전체 모듈을 조립하는 진입점이며, `common` · `dataresource`는 공용 유틸 / 결과 래퍼로 모든 레이어에서 참조됩니다.
 
-| 모듈 | 역할 |
-|---|---|
-| `app` | DI 설정 (Hilt 모듈), Application 진입점 |
-| `ui` | Compose 화면 (목록 / 상세 / 검색 / 공통 컴포넌트) |
-| `presentation` | ViewModel, UI State |
-| `domain` | UseCase, Repository 인터페이스 (순수 Kotlin) |
-| `data` | Repository 구현, DTO ↔ Domain 매퍼 |
-| `remote` | Retrofit API 정의, Remote DataSource |
-| `local` | Room DB, DAO, Local DataSource |
-| `dataresource` | `DataResource<T>`, `AppError` 등 결과 래퍼 |
-| `common` | 공통 유틸 / 상수 |
+| 모듈 | 역할                                         |
+|---|--------------------------------------------|
+| `app` | DI 설정 (Hilt 모듈), Application 진입점           |
+| `ui` | Compose 화면 (목록 / 상세 / 검색 / 공통 컴포넌트)        |
+| `presentation` | ViewModel, UI State                        |
+| `domain` | UseCase, Repository 인터페이스 (순수 Kotlin)      |
+| `data` | Repository 구현, DTO ↔ Domain 매퍼 (순수 Kotlin) |
+| `remote` | Retrofit API 정의, Remote DataSource         |
+| `local` | Room DB, DAO, Local DataSource             |
+| `dataresource` | `DataResource<T>`, `AppError` 등 결과 래퍼 (순수 Kotlin)     |
+| `common` | 공통 유틸 / 상수                                 |
 
 ---
 
@@ -107,7 +106,26 @@
 - **모듈 간 모델 분리**: Remote DTO, Local Entity, Domain Model을 분리하면서 매퍼 코드가 많아지지만, 각 레이어의 변경 영향을 격리할 수 있다는 장점
 - **Compose에서 동적 컬러**: Palette로 추출한 색상의 대비(contrast)에 따라 텍스트 색을 분기 처리해야 가독성 확보
 - **ImageLoader 싱글톤화**: 여러 화면에서 같은 DB를 반복 구독하는 문제를 해결
-- **KSP 전환**: KAPT 대비 빌드 시간 단축 체감
+
+<details>
+<summary><b>🔥 가장 오래 붙잡고 있었던 에러 — Hilt × Kotlin 메타데이터 버전 충돌</b></summary>
+
+<br/>
+
+```
+[Hilt] Provided Metadata instance has version 2.2.0,
+while maximum supported version is 2.0.0.
+```
+
+Kotlin 2.1.x가 생성하는 `@Metadata`(v2.2.0)를 Hilt 2.50 내부의 `kotlinx-metadata-jvm`(v2.0.0까지만 지원)이 못 읽어 발생한 에러. 검색 결과대로 `kapt(kotlinx-metadata-jvm)`을 따로 추가해도 해결되지 않았는데, **Hilt/Dagger가 이 라이브러리를 자체적으로 shading 해서 쓰기 때문**이었음. 외부 dependency 추가는 무시되고, **Hilt 본체를 `2.57.2`로 업그레이드** + 버전 카탈로그(`version` ↔ `version.ref` 키 혼용) 정리로 해결.
+
+후속으로 발견한 것:
+- Hilt 해결 직후 Compose BOM × `compileSdk` 충돌 → Compose BOM 한 단계 낮추기 + `compileSdk = 35`
+- `domain` 같은 순수 Kotlin 모듈은 Hilt가 아니라 `javax.inject` 만으로 충분
+
+> 💡 라이브러리가 shading한 transitive dependency는 외부에서 우회되지 않음. 표면적인 에러 메시지를 그대로 따라가기 전에 실제 로드되는 버전을 먼저 확인할 것.
+
+</details>
 
 ---
 
