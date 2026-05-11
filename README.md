@@ -15,14 +15,14 @@
 ## 📸 스크린샷
 
 ### 포켓몬 목록
-|                          Light                           | Dark |
-|:--------------------------------------------------------:|:---:|
-| <img src="docs/screenshots/list_light.png" width="240"/> | <img src="docs/screenshots/list_dark.png" width="240"/> |
+|                          Light                           |                          Dark                           |
+|:--------------------------------------------------------:|:-------------------------------------------------------:|
+| <img src="docs/screenshots/list_light.jpg" width="240"/> | <img src="docs/screenshots/list_dark.jpg" width="240"/> |
 
 ### 포켓몬 상세
-|                          Light 1                           |                           Light 2                            | Dark |
-|:----------------------------------------------------------:|:------------------------------------------------------------:|:---:|
-| <img src="docs/screenshots/detail_light.png" width="220"/> | <img src="docs/screenshots/detail_light_2.png" width="220"/> | <img src="docs/screenshots/detail_dark.png" width="220"/> |
+|                          Light 1                           |                           Light 2                            |                           Dark                            |
+|:----------------------------------------------------------:|:------------------------------------------------------------:|:---------------------------------------------------------:|
+| <img src="docs/screenshots/detail_light.jpg" width="220"/> | <img src="docs/screenshots/detail_light_2.jpg" width="220"/> | <img src="docs/screenshots/detail_dark.jpg" width="220"/> |
 
 <p align="center">
   <img src="docs/screenshots/detail_appbar.gif" width="260" alt="Collapsing AppBar 애니메이션"/>
@@ -31,14 +31,14 @@
 </p>
 
 ### 진화 체인
-| 기본 화면 |                             스크롤 시                              |
-|:---:|:--------------------------------------------------------------:|
-| <img src="docs/screenshots/evolution.png" width="240"/> | <img src="docs/screenshots/evolution_scroll.gif" width="240"/> |
+|                          기본 화면                          |                             스크롤 시                              |
+|:-------------------------------------------------------:|:--------------------------------------------------------------:|
+| <img src="docs/screenshots/evolution.jpg" width="240"/> | <img src="docs/screenshots/evolution_scroll.gif" width="240"/> |
 
 ### 검색
-|                           Light                            | Dark |
-|:----------------------------------------------------------:|:---:|
-| <img src="docs/screenshots/search_light.png" width="240"/> | <img src="docs/screenshots/search_dark.png" width="240"/> |
+|                           Light                            |                           Dark                            |
+|:----------------------------------------------------------:|:---------------------------------------------------------:|
+| <img src="docs/screenshots/search_light.jpg" width="240"/> | <img src="docs/screenshots/search_dark.jpg" width="240"/> |
 
 ---
 
