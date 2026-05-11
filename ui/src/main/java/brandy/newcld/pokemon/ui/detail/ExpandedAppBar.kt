@@ -65,7 +65,7 @@ fun ExpandedAppBar(
                     engName,
                     style = Typography.titleSmall,
                     color = engNameColor,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
             }
