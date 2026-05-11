@@ -20,15 +20,9 @@
 | <img src="docs/screenshots/list_light.jpg" width="240"/> | <img src="docs/screenshots/list_dark.jpg" width="240"/> |
 
 ### 포켓몬 상세
-|                          Light 1                           |                           Light 2                            |                           Dark                            |
-|:----------------------------------------------------------:|:------------------------------------------------------------:|:---------------------------------------------------------:|
-| <img src="docs/screenshots/detail_light.jpg" width="220"/> | <img src="docs/screenshots/detail_light_2.jpg" width="220"/> | <img src="docs/screenshots/detail_dark.jpg" width="220"/> |
-
-<p align="center">
-  <img src="docs/screenshots/detail_appbar.gif" width="260" alt="Collapsing AppBar 애니메이션"/>
-  <br/>
-  <sub>Collapsing AppBar 애니메이션</sub>
-</p>
+| Light 1 | Light 2 | Dark | AppBar 애니메이션 |
+|:---:|:---:|:---:|:---:|
+| <img src="docs/screenshots/detail_light.jpg" width="200"/> | <img src="docs/screenshots/detail_light_2.jpg" width="200"/> | <img src="docs/screenshots/detail_dark.jpg" width="200"/> | <img src="docs/screenshots/detail_appbar.gif" width="200" alt="Collapsing AppBar 애니메이션"/> |
 
 ### 진화 체인
 |                          기본 화면                          |                             스크롤 시                              |
