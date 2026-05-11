@@ -8,7 +8,7 @@
 [![targetSdk](https://img.shields.io/badge/targetSdk-34-3DDC84)](https://developer.android.com/about/versions/14)
 
 본 프로젝트는 배포용이 아닌 **공부용**으로, 멀티모듈 클린 아키텍처와 최신 Jetpack 스택을 직접 적용해 보는 것이 목적입니다.
-테드박님의 [MovieApplication](https://github.com/tedb-org/MovieApplication) 클린 아키텍처 구조를 참고하여 설계했습니다.
+테드박님의 MovieApplication 클린 아키텍처 구조를 참고하여 설계했습니다.
 
 ---
 
@@ -132,10 +132,4 @@
 
 Claude의 모든 제안은 직접 검토·수정 후 반영했으며, 아키텍처와 모듈 분리 등 핵심 설계 결정은 직접 수행했습니다. AI 도구를 학습 과정의 일부로 효과적으로 활용하는 방법 자체도 이번 프로젝트의 학습 포인트였습니다.
 
----
 
-## 📚 참고
-
-- [PokeAPI](https://pokeapi.co/)
-- [테드박 - MovieApplication](https://github.com/tedb-org/MovieApplication)
-- [Android Developers - Guide to app architecture](https://developer.android.com/topic/architecture)
