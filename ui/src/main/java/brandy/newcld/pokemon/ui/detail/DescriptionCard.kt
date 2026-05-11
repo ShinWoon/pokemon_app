@@ -19,10 +19,12 @@ fun DescriptionCard(
     descriptionText: String,
     typeColors: PokemonTypeColor
 ) {
-    DetailCommonCard (
-        modifier = modifier,
-        isDarkMode = isDarkMode
-    ) {
-        Text(text = descriptionText, fontSize = 14.sp, style = Typography.titleMedium, color = lerp(typeColors.textColor, Color.Black, 0.25f), lineHeight = 22.sp, modifier = modifier.padding(horizontal = 16.dp, vertical = 12.dp))
+    if(descriptionText != "") {
+        DetailCommonCard (
+            modifier = modifier,
+            isDarkMode = isDarkMode
+        ) {
+            Text(text = descriptionText, fontSize = 14.sp, style = Typography.titleMedium, color = lerp(typeColors.textColor, Color.Black, 0.25f), lineHeight = 22.sp, modifier = modifier.padding(horizontal = 16.dp, vertical = 12.dp))
+        }
     }
 }
