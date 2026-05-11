@@ -25,7 +25,6 @@ okhttp = "4.12.0"
 paging = "3.3.6"
 palette = "1.0.0"
 retrofit = "2.11.0"
-media3Exoplayer = "1.8.0"
 roomCompiler = "2.8.4"
 roomPaging = "2.6.1"
 roomRuntime = "2.8.4"
@@ -72,7 +71,6 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagge
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 hilt-core = { module = "com.google.dagger:hilt-core", version.ref = "dagger" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
-androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3Exoplayer" }
 
 # Paging
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "paging" }
