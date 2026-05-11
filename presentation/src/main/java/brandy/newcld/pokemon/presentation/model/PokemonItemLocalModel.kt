@@ -13,7 +13,7 @@ fun PokemonListItemLocal.toPokemonItemLocalModel(): PokemonItemLocalModel {
     return PokemonItemLocalModel(
         id = pid,
         koName = koName,
-        dayTimeColor = dayTimeColor?.toInt() ?: 0,
-        nightTimeColor = nightTimeColor?.toInt() ?: 0
+        dayTimeColor = dayTimeColor?.toIntOrNull() ?: 0,
+        nightTimeColor = nightTimeColor?.toIntOrNull() ?: 0
     )
 }

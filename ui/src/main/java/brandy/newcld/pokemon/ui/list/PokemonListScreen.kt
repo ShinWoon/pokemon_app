@@ -1,17 +1,21 @@
 package brandy.newcld.pokemon.ui.list
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,85 +24,136 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import brandy.newcld.pokemon.dataresource.toAppError
+import brandy.newcld.pokemon.presentation.model.SearchResultItem
 import brandy.newcld.pokemon.presentation.viewmodel.PokemonListViewModel
 import brandy.newcld.pokemon.ui.state.ErrorScreen
 import brandy.newcld.pokemon.ui.state.LoadingScreen
-import brandy.newcld.pokemon.ui.theme.Background
-import brandy.newcld.pokemon.ui.theme.DarkModeBackground
-import brandy.newcld.pokemon.ui.theme.Secondary
-import brandy.newcld.pokemon.ui.theme.Typography
 
 private const val TAG = "PokemonListScreen"
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokemonListScreen(
     modifier: Modifier = Modifier,
     pokemonListViewModel: PokemonListViewModel,
-    onItemClick : (pid: Int) -> Unit,
+    onItemClick: (pid: Int) -> Unit,
 ) {
     val items = pokemonListViewModel.pokemonList.collectAsLazyPagingItems()
     val localById by pokemonListViewModel.localById.collectAsState()
     val tmpMap by pokemonListViewModel.bgColors.collectAsState()
+    val isSearching by pokemonListViewModel.isSearching.collectAsState()
+    val searchQuery by pokemonListViewModel.searchQuery.collectAsState()
+    val searchResults by pokemonListViewModel.searchResults.collectAsState()
 
     val isDarkMode = isSystemInDarkTheme()
     val refresh = items.loadState.refresh
     val isReady = refresh is LoadState.NotLoading && items.itemCount > 0 && localById.isNotEmpty()
 
+    BackHandler(enabled = isSearching) {
+        pokemonListViewModel.setSearchActive(false)
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
-        TopAppBar(
-            title = {
-                Text(
-                    text = "포켓몬 도감",
-                    style = Typography.titleLarge,
-                    color = if(isDarkMode) Background else Secondary,
+        Crossfade(
+            targetState = isSearching,
+            animationSpec = tween(durationMillis = 220),
+            label = "topbar-crossfade",
+        ) { searching ->
+            if (searching) {
+                SearchTopBar(
+                    query = searchQuery,
+                    onQueryChange = pokemonListViewModel::updateSearchQuery,
+                    onClose = { pokemonListViewModel.setSearchActive(false) },
+                    isDarkMode = isDarkMode,
                 )
-            },
-            modifier = Modifier
-                .fillMaxWidth(),
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = if(isDarkMode) DarkModeBackground else Background
-            ),
-        )
-        when {
-            refresh is LoadState.Error -> ErrorScreen(
-                error = refresh.error.toAppError(),
-                isDarkMode = isDarkMode,
-                onRetry = { items.retry() },
-            )
-            !isReady -> LoadingScreen(isDarkMode = isDarkMode)
-            else -> LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 160.dp),
-                modifier = modifier
-                    .fillMaxSize(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(12.dp)
-            ) {
-                items(
-                    count = items.itemCount,
-                    key = { index -> items[index]?.id ?: index },
-                ) { index ->
-                    val pokemon = items[index]
-                    val pokemonLocal = pokemon?.let { localById[it.id] }
-
-                    if (pokemon == null || pokemonLocal == null) {
-                        PokemonListItemSkeleton(isDarkMode = isDarkMode)
-                        return@items
-                    }
-
-                    val tmp = tmpMap[pokemon.id]
-                    PokemonListItem(
-                        modifier = modifier,
-                        onClick = { onItemClick(pokemon.id) },
-                        pokemonItem = pokemon,
-                        isDarkMode = isDarkMode,
-                        tmpBgColors = tmp,
-                        pokemonItemLocalModel = pokemonLocal,
-                        onColorExtracted = { color -> pokemonListViewModel.onColorExtracted(pokemon.id, color) }
-                    )
-                }
+            } else {
+                PokemonListTopBar(
+                    onSearchClick = { pokemonListViewModel.setSearchActive(true) },
+                    isDarkMode = isDarkMode,
+                )
             }
         }
+
+        Box(modifier = Modifier.fillMaxSize()) {
+            when {
+                refresh is LoadState.Error -> ErrorScreen(
+                    error = refresh.error.toAppError(),
+                    isDarkMode = isDarkMode,
+                    onRetry = { items.retry() },
+                )
+                !isReady -> LoadingScreen(isDarkMode = isDarkMode)
+                else -> LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 160.dp),
+                    modifier = modifier
+                        .fillMaxSize(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(12.dp)
+                ) {
+                    items(
+                        count = items.itemCount,
+                        key = { index -> items[index]?.id ?: index },
+                    ) { index ->
+                        val pokemon = items[index]
+                        val pokemonLocal = pokemon?.let { localById[it.id] }
+
+                        if (pokemon == null || pokemonLocal == null) {
+                            PokemonListItemSkeleton(isDarkMode = isDarkMode)
+                            return@items
+                        }
+
+                        val tmp = tmpMap[pokemon.id]
+                        PokemonListItem(
+                            modifier = modifier,
+                            onClick = { onItemClick(pokemon.id) },
+                            pokemonItem = pokemon,
+                            isDarkMode = isDarkMode,
+                            tmpBgColors = tmp,
+                            pokemonItemLocalModel = pokemonLocal,
+                            onColorExtracted = { color -> pokemonListViewModel.onColorExtracted(pokemon.id, color) }
+                        )
+                    }
+                }
+            }
+
+
+            AnimatedSearchOverlay(
+                visible = isSearching,
+                query = searchQuery,
+                results = searchResults,
+                isDarkMode = isDarkMode,
+                onItemClick = { pid ->
+                    pokemonListViewModel.setSearchActive(false)
+                    onItemClick(pid)
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun AnimatedSearchOverlay(
+    visible: Boolean,
+    query: String,
+    results: List<SearchResultItem>,
+    isDarkMode: Boolean,
+    onItemClick: (Int) -> Unit,
+) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = slideInVertically(
+            animationSpec = tween(durationMillis = 240),
+            initialOffsetY = { -it / 4 },
+        ) + fadeIn(animationSpec = tween(durationMillis = 240)),
+        exit = slideOutVertically(
+            animationSpec = tween(durationMillis = 220),
+            targetOffsetY = { -it / 4 },
+        ) + fadeOut(animationSpec = tween(durationMillis = 220)),
+    ) {
+        SearchResultDropdown(
+            query = query,
+            results = results,
+            onItemClick = onItemClick,
+            isDarkMode = isDarkMode,
+        )
     }
 }

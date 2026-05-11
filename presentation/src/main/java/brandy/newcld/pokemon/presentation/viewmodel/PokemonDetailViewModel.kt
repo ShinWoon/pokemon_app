@@ -7,16 +7,21 @@ import brandy.newcld.pokemon.domain.usecase.GetEvolutionChainUseCase
 import brandy.newcld.pokemon.domain.usecase.GetPokemonDetailLocalInfoUseCase
 import brandy.newcld.pokemon.domain.usecase.GetPokemonInfoUseCase
 import brandy.newcld.pokemon.domain.usecase.GetPokemonSpeciesUseCase
+import brandy.newcld.pokemon.domain.usecase.UpdateBackgroundColorsUseCase
 import brandy.newcld.pokemon.presentation.model.AbilityModel
+import brandy.newcld.pokemon.presentation.model.DayNight
 import brandy.newcld.pokemon.presentation.model.EvolutionChainModel
 import brandy.newcld.pokemon.presentation.model.PokemonDetailLocalInfoModel
 import brandy.newcld.pokemon.presentation.model.PokemonInfoModel
 import brandy.newcld.pokemon.presentation.model.UiState
 import brandy.newcld.pokemon.presentation.model.toPokemonDetailLocalInfoModel
 import brandy.newcld.pokemon.presentation.model.toPresentationModel
+import brandy.newcld.pokemon.presentation.util.ColorUtil.toDarkerColor
+import brandy.newcld.pokemon.presentation.util.ColorUtil.toPastelColor
 import brandy.newcld.pokemon.presentation.util.SoundPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -34,6 +39,7 @@ class PokemonDetailViewModel @Inject constructor(
     private val getPokemonSpeciesUseCase: GetPokemonSpeciesUseCase,
     private val getAbilityUseCase: GetAbilityUseCase,
     private val getEvolutionChainUseCase: GetEvolutionChainUseCase,
+    private val updateBackgroundColorsUseCase: UpdateBackgroundColorsUseCase,
     private val soundPlayer: SoundPlayer,
 ): BaseViewModel() {
     private val _localAppBarInfoUiState = MutableStateFlow(UiState<PokemonDetailLocalInfoModel>(isLoading = true))
@@ -47,6 +53,17 @@ class PokemonDetailViewModel @Inject constructor(
 
     private val _evolutionChainUiState = MutableStateFlow(UiState<EvolutionChainModel>(isLoading = true))
     val evolutionChainUiState = _evolutionChainUiState
+
+    private val _tmpColor = MutableStateFlow<DayNight?>(null)
+    val tmpColor = _tmpColor.asStateFlow()
+
+    fun onColorExtracted(pid: Int, baseColor: Int) {
+        val dayTimeColor = toPastelColor(baseColor)
+        val nightTimeColor = toDarkerColor(baseColor)
+        _tmpColor.value = DayNight(dayTimeColor, nightTimeColor)
+        updateBackgroundColorsUseCase(pid, dayTimeColor, nightTimeColor)
+            .launchIn(viewModelScope)
+    }
 
     fun getPokemonInfo(pid: Int?) {
         val id = pid ?: 1

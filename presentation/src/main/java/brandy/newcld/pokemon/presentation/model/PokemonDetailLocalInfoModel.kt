@@ -16,6 +16,6 @@ fun PokemonDetailLocalInfoItem.toPokemonDetailLocalInfoModel(): PokemonDetailLoc
         pid = pid,
         koName = koName,
         engName = engName,
-        dayTimeColor = dayTimeColor?.toInt() ?: 0,
-        nightTimeColor = nightTimeColor?.toInt() ?: 0,
+        dayTimeColor = dayTimeColor?.toIntOrNull() ?: 0,
+        nightTimeColor = nightTimeColor?.toIntOrNull() ?: 0,
     )

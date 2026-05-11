@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -29,6 +30,7 @@ import brandy.newcld.pokemon.ui.state.LoadingScreen
 import brandy.newcld.pokemon.ui.theme.DarkGray
 import brandy.newcld.pokemon.ui.theme.Hint
 import brandy.newcld.pokemon.ui.theme.LightText
+import brandy.newcld.pokemon.ui.util.PaletteUtil.paletteBackgroundColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,6 +60,8 @@ fun PokemonDetailScreen(
     val remoteInfo by pokemonDetailViewModel.remotePokemonInfoUiState.collectAsState()
     val descriptionInfo by pokemonDetailViewModel.descriptionUiState.collectAsState()
     val evolutionChainInfo by pokemonDetailViewModel.evolutionChainUiState.collectAsState()
+    val tmpColor by pokemonDetailViewModel.tmpColor.collectAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         pokemonDetailViewModel.getPokemonInfo(pid = pid)
@@ -85,7 +89,23 @@ fun PokemonDetailScreen(
     val local = localInfo.data ?: return
     val remote = remoteInfo.data ?: return
 
-    val bgColor = if (isDarkMode) Color(local.nightTimeColor) else Color(local.dayTimeColor)
+    val needsColorExtraction = local.dayTimeColor == 0 || local.nightTimeColor == 0
+
+    LaunchedEffect(local.pid, remote.imgUrl) {
+        if (needsColorExtraction && remote.imgUrl.isNotBlank()) {
+            val color = paletteBackgroundColor(remote.imgUrl, context)
+            pokemonDetailViewModel.onColorExtracted(local.pid, color)
+        }
+    }
+
+    if (needsColorExtraction && tmpColor == null) {
+        LoadingScreen(isDarkMode = isDarkMode)
+        return
+    }
+
+    val dayColor = if (local.dayTimeColor != 0) local.dayTimeColor else tmpColor?.day ?: 0
+    val nightColor = if (local.nightTimeColor != 0) local.nightTimeColor else tmpColor?.night ?: 0
+    val bgColor = if (isDarkMode) Color(nightColor) else Color(dayColor)
     val isLightBg = bgColor.luminance() > 0.5f
     val onBgColor = if (isLightBg) DarkGray else LightText
     val onBgSubColor = if (isLightBg) Hint else LightText.copy(alpha = 0.7f)
