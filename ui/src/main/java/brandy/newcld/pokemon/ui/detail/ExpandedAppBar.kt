@@ -45,7 +45,7 @@ fun ExpandedAppBar(
                     .data(imageUrl)
                     .build(),
                 contentDescription = null,
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Fit,
                 modifier = modifier
                     .size(200.dp),
                 alignment = Alignment.BottomCenter
