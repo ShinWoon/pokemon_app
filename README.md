@@ -123,8 +123,6 @@ Kotlin 2.1.x가 생성하는 `@Metadata`(v2.2.0)를 Hilt 2.50 내부의 `kotlinx
 - Hilt 해결 직후 Compose BOM × `compileSdk` 충돌 → Compose BOM 한 단계 낮추기 + `compileSdk = 35`
 - `domain` 같은 순수 Kotlin 모듈은 Hilt가 아니라 `javax.inject` 만으로 충분
 
-> 💡 라이브러리가 shading한 transitive dependency는 외부에서 우회되지 않음. 표면적인 에러 메시지를 그대로 따라가기 전에 실제 로드되는 버전을 먼저 확인할 것.
-
 </details>
 
 ---
