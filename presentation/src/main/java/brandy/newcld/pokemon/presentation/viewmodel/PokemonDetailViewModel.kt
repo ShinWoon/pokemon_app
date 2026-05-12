@@ -66,6 +66,7 @@ class PokemonDetailViewModel @Inject constructor(
     }
 
     fun getPokemonInfo(pid: Int?) {
+        if(_remotePokemonInfoUiState.value.data != null) return
         val id = pid ?: 1
         getPokemonDetailUseCase(id = id).bind(
             state = _remotePokemonInfoUiState,
@@ -115,6 +116,7 @@ class PokemonDetailViewModel @Inject constructor(
     }
 
     fun loadLocalInfo(pid: Int?) {
+        if(_localAppBarInfoUiState.value.data != null) return
         getPokemonDetailLocalInfoUseCase(pid = pid ?: 1).bind(
             state = _localAppBarInfoUiState,
             mapper = { it.toPokemonDetailLocalInfoModel() }
