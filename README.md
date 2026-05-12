@@ -131,17 +131,17 @@ Kotlin 2.1.x가 생성하는 `@Metadata`(v2.2.0)를 Hilt 2.50 내부의 `kotlinx
 
 본 프로젝트는 전체 103개 커밋 중 후반 약 1/3 구간(`d98a3ba` 이후)부터 Claude를 페어 프로그래밍 파트너로 활용했습니다.
 
-**직접 구현 (커밋 1 ~ 67)**
+**직접 구현**
 - 멀티모듈 클린 아키텍처 설계 및 모듈 간 의존성 구성
 - PokeAPI 연동 (Retrofit / OkHttp)
 - Paging 3 적용, Room 도입 및 데이터 흐름 연결
 - 포켓몬 리스트 화면, Splash, Collapsing AppBar 애니메이션
+- Palette 기반 동적 색상 적용 (포켓몬 이미지에서 추출한 색으로 UI 톤 매칭)
 - KAPT → KSP 전환
 
-**Claude와 함께 작업 (커밋 68 ~ 103)**
+**Claude와 함께 작업**
 - 포켓몬 상세 화면 데이터 매핑 및 UI 구성
 - 울음소리 재생 (MediaPlayer), 어빌리티 한글화, 진화 체인
-- Palette 기반 동적 색상 적용
 - 검색 기능
 - 로딩 / 에러 상태 분기
 - 후반 리팩토링 (ImageLoader 싱글톤화, 중복 DB 구독 제거, 크래시 수정)
