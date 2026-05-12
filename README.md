@@ -7,7 +7,7 @@
 [![minSdk](https://img.shields.io/badge/minSdk-24-3DDC84)](https://developer.android.com/about/versions/android-7.0)
 [![targetSdk](https://img.shields.io/badge/targetSdk-34-3DDC84)](https://developer.android.com/about/versions/14)
 
-본 프로젝트는 배포용이 아닌 **공부용**으로, 멀티모듈 클린 아키텍처와 최신 Jetpack 스택을 직접 적용해 보는 것이 목적입니다.
+본 프로젝트는 배포용이 아닌 **공부용**으로, 멀티모듈 클린 아키텍처와 최신 Jetpack 기술 스택을 직접 적용해 보는 것이 목적입니다.
 테드박님의 MovieApplication 클린 아키텍처 구조를 참고하여 설계했습니다.
 
 ---
@@ -129,7 +129,7 @@ Kotlin 2.1.x가 생성하는 `@Metadata`(v2.2.0)를 Hilt 2.50 내부의 `kotlinx
 
 ## 🤖 AI 협업 노트
 
-본 프로젝트는 전체 103개 커밋 중 후반 약 1/3 구간(`d98a3ba` 이후)부터 Claude를 페어 프로그래밍 파트너로 활용했습니다.
+본 프로젝트는 전체 커밋 중 후반 약 1/3 구간(`d98a3ba` 이후)부터 Claude를 페어 프로그래밍 파트너로 활용했습니다.
 
 **직접 구현**
 - 멀티모듈 클린 아키텍처 설계 및 모듈 간 의존성 구성
