@@ -56,7 +56,6 @@ dependencies {
     implementation(project(":remote"))
     implementation(project(":domain"))
     implementation(project(":data"))
-    implementation(project(":common"))
     implementation(project(":local"))
     implementation(project(":presentation"))
 }
