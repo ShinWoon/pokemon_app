@@ -78,7 +78,6 @@
 | `remote` | Retrofit API 정의, Remote DataSource         |
 | `local` | Room DB, DAO, Local DataSource             |
 | `dataresource` | `DataResource<T>`, `AppError` 등 결과 래퍼 (순수 Kotlin)     |
-| `common` | 공통 유틸 / 상수                                 |
 
 ---
 
