@@ -66,7 +66,7 @@
 
 - 모든 레이어가 `domain`을 향해 의존합니다.
 - `data`는 `domain`의 Repository 인터페이스를 구현하며, 안드로이드/프레임워크 의존성은 `domain`에 침투하지 않습니다.
-- `app` 모듈은 Hilt로 전체 모듈을 조립하는 진입점이며, `common` · `dataresource`는 공용 유틸 / 결과 래퍼로 모든 레이어에서 참조됩니다.
+- `app` 모듈은 Hilt로 전체 모듈을 조립하는 진입점이며, `dataresource`는 결과 래퍼로 모든 레이어에서 참조됩니다.
 
 | 모듈 | 역할                                         |
 |---|--------------------------------------------|
@@ -116,7 +116,7 @@
 while maximum supported version is 2.0.0.
 ```
 
-Kotlin 2.1.x가 생성하는 `@Metadata`(v2.2.0)를 Hilt 2.50 내부의 `kotlinx-metadata-jvm`(v2.0.0까지만 지원)이 못 읽어 발생한 에러. 검색 결과대로 `kapt(kotlinx-metadata-jvm)`을 따로 추가해도 해결되지 않았는데, **Hilt/Dagger가 이 라이브러리를 자체적으로 shading 해서 쓰기 때문**이었음. 외부 dependency 추가는 무시되고, **Hilt 본체를 `2.57.2`로 업그레이드** + 버전 카탈로그(`version` ↔ `version.ref` 키 혼용) 정리로 해결.
+Kotlin 2.1.x가 생성하는 `@Metadata`(v2.2.0)를 Hilt 2.50 내부의 `kotlinx-metadata-jvm`(v2.0.0까지만 지원)이 못 읽어 발생한 에러. 검색 결과대로 `kapt(kotlinx-metadata-jvm)`을 따로 추가해도 해결되지 않았는데, **Hilt/Dagger가 이 라이브러리를 자체적으로 내부에 포함해서 쓰기 때문**이었음. 외부 dependency 추가는 무시되고, **Hilt 본체를 `2.57.2`로 업그레이드** + 버전 카탈로그(`version` ↔ `version.ref` 키 혼용) 정리로 해결.
 
 후속으로 발견한 것:
 - Hilt 해결 직후 Compose BOM × `compileSdk` 충돌 → Compose BOM 한 단계 낮추기 + `compileSdk = 35`
